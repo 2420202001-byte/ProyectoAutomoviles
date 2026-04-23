@@ -144,6 +144,7 @@ namespace AutoMovilAppCliente
                 {
                     MessageBox.Show("Actualizado correctamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AutoObservable.GetInstancia().NotificarObservers();
                     panelForm.Enabled = false;
                 }
                 else

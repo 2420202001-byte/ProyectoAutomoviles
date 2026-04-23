@@ -19,18 +19,18 @@ namespace AutoMovilAppCliente
             var menu = new MenuStrip { BackColor = Color.FromArgb(30, 30, 30), ForeColor = Color.White };
 
             var mnuElectrico = new ToolStripMenuItem("⚡ Eléctrico") { ForeColor = Color.White };
-            mnuElectrico.DropDownItems.Add("➕  Adicionar", null, (s, e) => new FormAdicionarElectrico().ShowDialog());
-            mnuElectrico.DropDownItems.Add("🔍  Buscar", null, (s, e) => new FormBuscarElectrico().ShowDialog());
-            mnuElectrico.DropDownItems.Add("✏️   Actualizar", null, (s, e) => new FormActualizarElectrico().ShowDialog());
-            mnuElectrico.DropDownItems.Add("🗑️   Eliminar", null, (s, e) => new FormEliminarElectrico().ShowDialog());
-            mnuElectrico.DropDownItems.Add("📋  Listar", null, (s, e) => new FormListarElectrico().ShowDialog());
+            mnuElectrico.DropDownItems.Add("➕  Adicionar", null, (s, e) => new FormAdicionarElectrico().Show());
+            mnuElectrico.DropDownItems.Add("🔍  Buscar", null, (s, e) => new FormBuscarElectrico().Show());
+            mnuElectrico.DropDownItems.Add("✏️   Actualizar", null, (s, e) => new FormActualizarElectrico().Show());
+            mnuElectrico.DropDownItems.Add("🗑️   Eliminar", null, (s, e) => new FormEliminarElectrico().Show());
+            mnuElectrico.DropDownItems.Add("📋  Listar", null, (s, e) => new FormListarElectrico().Show());
 
             var mnuGasolina = new ToolStripMenuItem("⛽ Gasolina") { ForeColor = Color.White };
-            mnuGasolina.DropDownItems.Add("➕  Adicionar", null, (s, e) => new FormAdicionarGasolina().ShowDialog());
-            mnuGasolina.DropDownItems.Add("🔍  Buscar", null, (s, e) => new FormBuscarGasolina().ShowDialog());
-            mnuGasolina.DropDownItems.Add("✏️   Actualizar", null, (s, e) => new FormActualizarGasolina().ShowDialog());
-            mnuGasolina.DropDownItems.Add("🗑️   Eliminar", null, (s, e) => new FormEliminarGasolina().ShowDialog());
-            mnuGasolina.DropDownItems.Add("📋  Listar", null, (s, e) => new FormListarGasolina().ShowDialog());
+            mnuGasolina.DropDownItems.Add("➕  Adicionar", null, (s, e) => new FormAdicionarGasolina().Show());
+            mnuGasolina.DropDownItems.Add("🔍  Buscar", null, (s, e) => new FormBuscarGasolina().Show());
+            mnuGasolina.DropDownItems.Add("✏️   Actualizar", null, (s, e) => new FormActualizarGasolina().Show());
+            mnuGasolina.DropDownItems.Add("🗑️   Eliminar", null, (s, e) => new FormEliminarGasolina().Show());
+            mnuGasolina.DropDownItems.Add("📋  Listar", null, (s, e) => new FormListarGasolina().Show());
 
             var mnuAyuda = new ToolStripMenuItem("❓ Ayuda") { ForeColor = Color.White };
             mnuAyuda.DropDownItems.Add("Acerca de...", null, (s, e) =>

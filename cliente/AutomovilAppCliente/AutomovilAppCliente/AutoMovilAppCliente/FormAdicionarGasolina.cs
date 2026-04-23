@@ -98,6 +98,7 @@ namespace AutoMovilAppCliente
                 {
                     MessageBox.Show("Automóvil a gasolina guardado exitosamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AutoObservable.GetInstancia().NotificarObservers();
                     Limpiar();
                 }
                 else

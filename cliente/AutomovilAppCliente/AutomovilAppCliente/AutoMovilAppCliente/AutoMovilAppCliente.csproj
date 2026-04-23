@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoObserver.cs" />
     <Compile Include="FormActualizarElectrico.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,14 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\",
+  "WorkspaceRootPath": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|c:\\users\\juane\\desktop\\automovilapp2\\cliente\\automovilappcliente\\automovilappcliente\\automovilappcliente\\formprincipal.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formprincipal.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|c:\\users\\juane\\onedrive\\documentos\\proyectoautomoviles\\cliente\\automovilappcliente\\automovilappcliente\\automovilappcliente\\formactualizargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formactualizargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\automovilappcliente\\formprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|c:\\users\\juane\\onedrive\\documentos\\proyectoautomoviles\\cliente\\automovilappcliente\\automovilappcliente\\automovilappcliente\\formeliminargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formeliminargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|c:\\users\\juane\\onedrive\\documentos\\proyectoautomoviles\\cliente\\automovilappcliente\\automovilappcliente\\automovilappcliente\\formadicionargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formadicionargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|c:\\users\\juane\\onedrive\\documentos\\proyectoautomoviles\\cliente\\automovilappcliente\\automovilappcliente\\automovilappcliente\\formlistargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formlistargasolina.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|c:\\users\\juane\\onedrive\\documentos\\proyectoautomoviles\\cliente\\automovilappcliente\\automovilappcliente\\automovilappcliente\\autoobserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\autoobserver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,27 +35,67 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "FormPrincipal.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.Designer.cs",
-              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormPrincipal.Designer.cs",
-              "ToolTip": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.Designer.cs",
-              "RelativeToolTip": "AutoMovilAppCliente\\FormPrincipal.Designer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAmwAkAAAAjAAAAAAAAAA==",
+              "Title": "FormActualizarGasolina.cs",
+              "DocumentMoniker": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormActualizarGasolina.cs",
+              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormActualizarGasolina.cs",
+              "ToolTip": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormActualizarGasolina.cs",
+              "RelativeToolTip": "AutoMovilAppCliente\\FormActualizarGasolina.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAIwJIAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T23:42:11.63Z",
+              "WhenOpened": "2026-04-23T03:14:08.565Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "FormPrincipal.cs",
-              "DocumentMoniker": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.cs",
-              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormPrincipal.cs",
-              "ToolTip": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.cs",
-              "RelativeToolTip": "AutoMovilAppCliente\\FormPrincipal.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAAAqwHAAAAABAAAAAAAAAA==",
+              "Title": "FormEliminarGasolina.cs",
+              "DocumentMoniker": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormEliminarGasolina.cs",
+              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormEliminarGasolina.cs",
+              "ToolTip": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormEliminarGasolina.cs",
+              "RelativeToolTip": "AutoMovilAppCliente\\FormEliminarGasolina.cs",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAqwH0AAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-22T23:41:33.587Z"
+              "WhenOpened": "2026-04-23T03:12:27.615Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FormAdicionarGasolina.cs",
+              "DocumentMoniker": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormAdicionarGasolina.cs",
+              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormAdicionarGasolina.cs",
+              "ToolTip": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormAdicionarGasolina.cs",
+              "RelativeToolTip": "AutoMovilAppCliente\\FormAdicionarGasolina.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAqwGQAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-23T03:11:24.113Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FormListarGasolina.cs",
+              "DocumentMoniker": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormListarGasolina.cs",
+              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormListarGasolina.cs",
+              "ToolTip": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormListarGasolina.cs",
+              "RelativeToolTip": "AutoMovilAppCliente\\FormListarGasolina.cs",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAAAAwAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-23T03:04:32.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AutoObserver.cs",
+              "DocumentMoniker": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\AutoObserver.cs",
+              "RelativeDocumentMoniker": "AutoMovilAppCliente\\AutoObserver.cs",
+              "ToolTip": "C:\\Users\\juane\\OneDrive\\Documentos\\ProyectoAutomoviles\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\AutoObserver.cs",
+              "RelativeToolTip": "AutoMovilAppCliente\\AutoObserver.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAAwDMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-23T02:54:41.251Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -123,6 +123,7 @@ namespace AutoMovilAppCliente
                 {
                     MessageBox.Show("Eliminado correctamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AutoObservable.GetInstancia().NotificarObservers();
                     txtId.Text = "";
                     dgvResultado.Rows.Clear();
                     dgvResultado.Columns.Clear();

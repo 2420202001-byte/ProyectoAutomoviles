@@ -54,7 +54,7 @@ namespace AutoMovilAppCliente
             btnGuardar.ForeColor = System.Drawing.Color.White;
             btnGuardar.Dock = DockStyle.Fill;
             btnGuardar.Click += BtnGuardar_Click;
-
+            
             var btnLimpiar = new Button();
             btnLimpiar.Text = "Limpiar";
             btnLimpiar.Dock = DockStyle.Fill;
@@ -93,6 +93,7 @@ namespace AutoMovilAppCliente
                 {
                     MessageBox.Show("Automóvil eléctrico guardado exitosamente.", "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AutoObservable.GetInstancia().NotificarObservers();
                     Limpiar();
                 }
                 else

@@ -1,2 +1,4 @@
 C:\Users\juane\source\repos\AutomovilAppCliente\AutomovilAppCliente\obj\Debug\AutomovilAppCliente.csproj.AssemblyReference.cache
 C:\Users\juane\source\repos\AutomovilAppCliente\AutomovilAppCliente\obj\Debug\AutomovilAppCliente.csproj.CoreCompileInputs.cache
+C:\Users\juane\OneDrive\Documentos\ProyectoAutomoviles\cliente\AutomovilAppCliente\AutomovilAppCliente\obj\Debug\AutomovilAppCliente.csproj.AssemblyReference.cache
+C:\Users\juane\OneDrive\Documentos\ProyectoAutomoviles\cliente\AutomovilAppCliente\AutomovilAppCliente\obj\Debug\AutomovilAppCliente.csproj.CoreCompileInputs.cache

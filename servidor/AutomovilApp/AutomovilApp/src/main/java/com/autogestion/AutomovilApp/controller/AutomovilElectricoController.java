@@ -2,6 +2,7 @@ package com.autogestion.AutomovilApp.controller;
 
 import com.autogestion.AutomovilApp.model.AutomovilElectrico;
 import com.autogestion.AutomovilApp.service.AutomovilElectricoService;
+import com.autogestion.AutomovilApp.model.AutomovilElectricoBuilder;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,23 @@ public class AutomovilElectricoController {
         return "Servicio Automóvil Eléctrico Ok!";
     }
 
-    @PostMapping("/")
-    public ResponseEntity<AutomovilElectrico> agregar(@RequestBody AutomovilElectrico ae) {
-        if (ae == null) return ResponseEntity.noContent().build();
-        servicio.agregar(ae);
-        return ResponseEntity.ok(ae);
-    }
+   @PostMapping("/")
+public ResponseEntity<AutomovilElectrico> agregar(@RequestBody AutomovilElectrico ae) {
+    if (ae == null) return ResponseEntity.noContent().build();
+    AutomovilElectrico nuevo = new AutomovilElectricoBuilder()
+            .setId(ae.getId())
+            .setMarca(ae.getMarca())
+            .setModelo(ae.getModelo())
+            .setAnio(ae.getAnio())
+            .setColor(ae.getColor())
+            .setPrecio(ae.getPrecio())
+            .setAutonomiaKm(ae.getAutonomiaKm())
+            .setTiempoCargaHoras(ae.getTiempoCargaHoras())
+            .setBateria(ae.getBateria())
+            .build();
+    servicio.agregar(nuevo);
+    return ResponseEntity.ok(nuevo);
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<AutomovilElectrico> buscar(@PathVariable("id") String id) {

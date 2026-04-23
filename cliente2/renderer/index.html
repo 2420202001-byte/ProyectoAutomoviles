@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoGestión S.A.S</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; }
+        .navbar {
+            background: #1e1e1e;
+            padding: 10px 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .navbar span {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        .dropdown-btn:hover { background: #333; border-radius: 4px; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: #2d2d2d;
+            min-width: 160px;
+            z-index: 1;
+            border-radius: 4px;
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 10px 15px;
+            display: block;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .dropdown-content a:hover { background: #444; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .main-content {
+            padding: 40px;
+            text-align: center;
+        }
+        h1 { color: #0064b4; font-size: 28px; margin-bottom: 15px; }
+        p { color: #555; font-size: 14px; margin-bottom: 8px; }
+        .opciones {
+            margin-top: 30px;
+            text-align: left;
+            display: inline-block;
+        }
+        .opcion {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        .footer {
+            position: fixed;
+            bottom: 10px;
+            left: 20px;
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span>🚗 AutoGestión</span>
+        <div class="dropdown">
+            <button class="dropdown-btn">⚡ Eléctrico ▾</button>
+            <div class="dropdown-content">
+                <a href="adicionar-electrico.html">➕ Adicionar</a>
+                <a href="buscar-electrico.html">🔍 Buscar</a>
+                <a href="actualizar-electrico.html">✏️ Actualizar</a>
+                <a href="eliminar-electrico.html">🗑️ Eliminar</a>
+                <a href="listar-electrico.html">📋 Listar</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-btn">⛽ Gasolina ▾</button>
+            <div class="dropdown-content">
+                <a href="adicionar-gasolina.html">➕ Adicionar</a>
+                <a href="buscar-gasolina.html">🔍 Buscar</a>
+                <a href="actualizar-gasolina.html">✏️ Actualizar</a>
+                <a href="eliminar-gasolina.html">🗑️ Eliminar</a>
+                <a href="listar-gasolina.html">📋 Listar</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-btn">❓ Ayuda ▾</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="acercaDe()">Acerca de...</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1>🚗 Sistema de Gestión de Automóviles</h1>
+        <p>Universidad de Ibagué — Desarrollo de Aplicaciones Empresariales 2026A</p>
+        <p>Use el menú superior para navegar entre las funciones</p>
+        <div class="opciones">
+            <div class="opcion">➕ Adicionar — Registrar un nuevo automóvil</div>
+            <div class="opcion">🔍 Buscar — Consultar un automóvil por su ID</div>
+            <div class="opcion">✏️ Actualizar — Modificar datos de un automóvil</div>
+            <div class="opcion">🗑️ Eliminar — Borrar un automóvil del sistema</div>
+            <div class="opcion">📋 Listar — Ver todos los automóviles con filtros</div>
+        </div>
+    </div>
+
+    <div class="footer">Servidor: http://localhost:8080</div>
+
+    <script>
+        function acercaDe() {
+            alert('🚗 AutoGestión S.A.S\nVersión 1.0\n\nDesarrollo de Aplicaciones Empresariales\nUniversidad de Ibagué — 2026A\n\nIntegrantes:\n• Yaser Rondón\n• Ismael Cardozo\n• Juan Mancipe')
+        }
+    </script>
+</body>
+</html>

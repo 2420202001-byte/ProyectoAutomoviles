@@ -6,7 +6,7 @@ using System.Text.Json.Nodes;
 
 namespace AutoMovilAppCliente
 {
-    public partial class FormListarElectrico : Form
+    public partial class FormListarElectrico : Form, IObserver
     {
         private const string BASE_URL = "http://localhost:8080";
         private DataGridView dgv;
@@ -139,6 +139,24 @@ namespace AutoMovilAppCliente
                 );
             }
             lblTotal.Text = "Total: " + lista.Count + " registros";
+
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            AutoObservable.GetInstancia().AgregarObserver(this);
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            AutoObservable.GetInstancia().EliminarObserver(this);
+        }
+
+        public void Actualizar()
+        {
+            CargarDatos();
         }
     }
 }

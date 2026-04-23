@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Gasolina</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; padding: 30px; }
+        h2 { color: #963200; margin-bottom: 20px; }
+        .filtros { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; width: 150px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .btn-filtrar { background: #963200; color: white; }
+        .btn-todos { background: #555; color: white; }
+        .btn-volver { background: #1e1e1e; color: white; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+        th { background: #963200; color: white; padding: 10px; text-align: left; font-size: 13px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; }
+        tr:hover { background: #fff5f0; }
+        .total { margin-top: 10px; font-size: 13px; color: #555; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h2>📋 Listado de Automóviles a Gasolina</h2>
+    <div class="filtros">
+        <input id="txtMarca" type="text" placeholder="Filtrar por marca">
+        <button class="btn btn-filtrar" onclick="filtrarMarca()">Filtrar marca</button>
+        <input id="txtAnio" type="number" placeholder="Filtrar por año">
+        <button class="btn btn-filtrar" onclick="filtrarAnio()">Filtrar año</button>
+        <button class="btn btn-todos" onclick="cargarDatos()">Ver Todos</button>
+        <button class="btn btn-volver" onclick="location.href='index.html'">← Volver</button>
+    </div>
+    <div id="tabla"></div>
+    <div class="total" id="total"></div>
+
+    <script>
+        const axios = require('axios')
+        const BASE_URL = 'http://localhost:8080'
+
+        // Observer pattern
+        const observers = []
+        function agregarObserver(fn) { observers.push(fn) }
+        function notificarObservers(datos) { observers.forEach(fn => fn(datos)) }
+
+        agregarObserver((datos) => {
+            document.getElementById('total').textContent = `Total: ${datos.length} registros`
+        })
+
+        async function cargarDatos() {
+            const res = await axios.get(`${BASE_URL}/gasolina/`)
+            mostrarDatos(res.data)
+        }
+
+        async function filtrarMarca() {
+            const marca = document.getElementById('txtMarca').value.trim()
+            if (!marca) { cargarDatos(); return }
+            const res = await axios.get(`${BASE_URL}/gasolina/filtrar?marca=${marca}`)
+            mostrarDatos(res.data)
+        }
+
+        async function filtrarAnio() {
+            const anio = document.getElementById('txtAnio').value.trim()
+            if (!anio) { cargarDatos(); return }
+            const res = await axios.get(`${BASE_URL}/gasolina/filtrar?anio=${anio}`)
+            mostrarDatos(res.data)
+        }
+
+        function mostrarDatos(lista) {
+            notificarObservers(lista)
+            let html = `<table>
+                <tr><th>ID</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Color</th><th>Precio</th><th>Consumo</th><th>Tanque</th><th>Cilindraje</th><th>Combustible</th></tr>`
+            lista.forEach(a => {
+                html += `<tr><td>${a.id}</td><td>${a.marca}</td><td>${a.modelo}</td><td>${a.anio}</td><td>${a.color}</td><td>${a.precio}</td><td>${a.consumoLitrosPor100Km}</td><td>${a.capacidadTanqueLitros}</td><td>${a.cilindraje}</td><td>${a.tipoCombustible}</td></tr>`
+            })
+            html += '</table>'
+            document.getElementById('tabla').innerHTML = html
+        }
+
+        cargarDatos()
+    </script>
+</body>
+</html>

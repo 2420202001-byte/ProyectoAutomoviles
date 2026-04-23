@@ -1,6 +1,7 @@
 package com.autogestion.AutomovilApp.controller;
 
 import com.autogestion.AutomovilApp.model.AutomovilGasolina;
+import com.autogestion.AutomovilApp.model.AutomovilGasolinaBuilder;
 import com.autogestion.AutomovilApp.service.AutomovilGasolinaService;
 
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,24 @@ public class AutomovilGasolinaController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<AutomovilGasolina> agregar(@RequestBody AutomovilGasolina ag) {
-        if (ag == null) return ResponseEntity.noContent().build();
-        servicio.agregar(ag);
-        return ResponseEntity.ok(ag);
-    }
+public ResponseEntity<AutomovilGasolina> agregar(@RequestBody AutomovilGasolina ag) {
+    if (ag == null) return ResponseEntity.noContent().build();
+    AutomovilGasolina nuevo = new AutomovilGasolinaBuilder()
+            .setId(ag.getId())
+            .setMarca(ag.getMarca())
+            .setModelo(ag.getModelo())
+            .setAnio(ag.getAnio())
+            .setColor(ag.getColor())
+            .setPrecio(ag.getPrecio())
+            .setConsumoLitrosPor100Km(ag.getConsumoLitrosPor100Km())
+            .setCapacidadTanqueLitros(ag.getCapacidadTanqueLitros())
+            .setCilindraje(ag.getCilindraje())
+            .setTipoCombustible(ag.getTipoCombustible())
+            .setTransmision(ag.getTransmision())
+            .build();
+    servicio.agregar(nuevo);
+    return ResponseEntity.ok(nuevo);
+}
 
     @GetMapping("/{id}")
     public ResponseEntity<AutomovilGasolina> buscar(@PathVariable("id") String id) {

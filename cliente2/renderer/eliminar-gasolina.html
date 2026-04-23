@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar Gasolina</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; padding: 30px; }
+        h2 { color: #963200; margin-bottom: 20px; }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; width: 250px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .btn-buscar { background: #963200; color: white; }
+        .btn-eliminar { background: #b40000; color: white; }
+        .btn-volver { background: #1e1e1e; color: white; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
+        th { background: #963200; color: white; padding: 10px; text-align: left; font-size: 13px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; }
+        .mensaje { margin-top: 15px; padding: 10px; border-radius: 4px; font-size: 13px; }
+        .exito { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h2>🗑️ Eliminar Automóvil a Gasolina</h2>
+    <div class="search-bar">
+        <input id="txtId" type="text" placeholder="Ingrese el ID">
+        <button class="btn btn-buscar" onclick="buscar()">Buscar</button>
+        <button class="btn btn-eliminar" onclick="eliminar()">Confirmar Eliminación</button>
+        <button class="btn btn-volver" onclick="location.href='index.html'">← Volver</button>
+    </div>
+    <div id="resultado"></div>
+    <div id="mensaje"></div>
+
+    <script>
+        const axios = require('axios')
+        const BASE_URL = 'http://localhost:8080'
+        let idActual = ''
+
+        async function buscar() {
+            const id = document.getElementById('txtId').value.trim()
+            if (!id) { alert('Ingrese un ID.'); return }
+            try {
+                const res = await axios.get(`${BASE_URL}/gasolina/${id}`)
+                const a = res.data
+                idActual = id
+                document.getElementById('resultado').innerHTML = `
+                    <table>
+                        <tr><th>ID</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Color</th><th>Precio</th><th>Consumo</th><th>Tanque</th><th>Cilindraje</th><th>Combustible</th></tr>
+                        <tr><td>${a.id}</td><td>${a.marca}</td><td>${a.modelo}</td><td>${a.anio}</td><td>${a.color}</td><td>${a.precio}</td><td>${a.consumoLitrosPor100Km}</td><td>${a.capacidadTanqueLitros}</td><td>${a.cilindraje}</td><td>${a.tipoCombustible}</td></tr>
+                    </table>`
+            } catch (e) {
+                document.getElementById('resultado').innerHTML = ''
+                document.getElementById('mensaje').innerHTML =
+                    `<div class="mensaje error">No se encontró ningún automóvil con ID: ${id}</div>`
+            }
+        }
+
+        async function eliminar() {
+            if (!idActual) { alert('Busque primero un automóvil.'); return }
+            if (!confirm('¿Confirma la eliminación?')) return
+            try {
+                await axios.delete(`${BASE_URL}/gasolina/${idActual}`)
+                document.getElementById('resultado').innerHTML = ''
+                document.getElementById('txtId').value = ''
+                idActual = ''
+                document.getElementById('mensaje').innerHTML =
+                    `<div class="mensaje exito">Eliminado correctamente.</div>`
+            } catch (e) {
+                document.getElementById('mensaje').innerHTML =
+                    `<div class="mensaje error">Error al eliminar.</div>`
+            }
+        }
+    </script>
+</body>
+</html>
