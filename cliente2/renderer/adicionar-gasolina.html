@@ -39,6 +39,7 @@
             <option>Premium</option>
         </select>
     </div>
+    <div class="form-group"><label>Fecha Registro:</label><input id="fechaRegistro" type="date"></div>
     <div class="btn-group">
         <button class="btn btn-guardar" onclick="guardar()">💾 Guardar</button>
         <button class="btn btn-limpiar" onclick="limpiar()">🧹 Limpiar</button>
@@ -52,6 +53,7 @@
 
         async function guardar() {
             try {
+                const fechaInput = document.getElementById('fechaRegistro').value
                 const auto = {
                     id: document.getElementById('id').value.trim(),
                     marca: document.getElementById('marca').value.trim(),
@@ -63,7 +65,8 @@
                     capacidadTanqueLitros: parseFloat(document.getElementById('capacidadTanqueLitros').value),
                     cilindraje: parseInt(document.getElementById('cilindraje').value),
                     tipoCombustible: document.getElementById('tipoCombustible').value,
-                    transmision: 'Manual'
+                    transmision: 'Manual',
+                    fechaRegistro: fechaInput ? fechaInput + 'T00:00:00' : new Date().toISOString().slice(0, 19)
                 }
                 await axios.post(`${BASE_URL}/gasolina/`, auto)
                 mostrarMensaje('Automóvil a gasolina guardado exitosamente.', 'exito')
@@ -77,6 +80,7 @@
             ['id','marca','modelo','anio','color','precio','consumoLitrosPor100Km',
              'capacidadTanqueLitros','cilindraje'].forEach(id => document.getElementById(id).value = '')
             document.getElementById('tipoCombustible').selectedIndex = 0
+            document.getElementById('fechaRegistro').value = ''
             document.getElementById('mensaje').innerHTML = ''
         }
 

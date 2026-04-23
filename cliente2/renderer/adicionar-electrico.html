@@ -17,6 +17,7 @@
         .mensaje { margin-top: 15px; padding: 10px; border-radius: 4px; font-size: 13px; }
         .exito { background: #d4edda; color: #155724; }
         .error { background: #f8d7da; color: #721c24; }
+        .btn-group { margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -29,13 +30,16 @@
     <div class="form-group"><label>Precio ($):</label><input id="precio" type="number"></div>
     <div class="form-group"><label>Autonomía (km):</label><input id="autonomiaKm" type="number"></div>
     <div class="form-group"><label>T. Carga (h):</label><input id="tiempoCargaHoras" type="number"></div>
+    <div class="form-group"><label>Fecha Registro:</label><input id="fechaRegistro" type="date"></div>
     <div class="form-group">
         <label>Batería:</label>
         <select id="cboBateria"></select>
     </div>
-    <button class="btn btn-guardar" onclick="guardar()">Guardar</button>
-    <button class="btn btn-limpiar" onclick="limpiar()">Limpiar</button>
-    <button class="btn btn-volver" onclick="location.href='index.html'">← Volver</button>
+    <div class="btn-group">
+        <button class="btn btn-guardar" onclick="guardar()">💾 Guardar</button>
+        <button class="btn btn-limpiar" onclick="limpiar()">🧹 Limpiar</button>
+        <button class="btn btn-volver" onclick="location.href='index.html'">← Volver</button>
+    </div>
     <div id="mensaje"></div>
 
     <script>
@@ -68,6 +72,7 @@
                     bateria = resBat.data
                 }
 
+                const fechaInput = document.getElementById('fechaRegistro').value
                 const auto = {
                     id: document.getElementById('id').value.trim(),
                     marca: document.getElementById('marca').value.trim(),
@@ -77,8 +82,10 @@
                     precio: parseFloat(document.getElementById('precio').value),
                     autonomiaKm: parseFloat(document.getElementById('autonomiaKm').value),
                     tiempoCargaHoras: parseFloat(document.getElementById('tiempoCargaHoras').value),
+                    fechaRegistro: fechaInput ? fechaInput + 'T00:00:00' : new Date().toISOString().slice(0, 19),
                     bateria: bateria
                 }
+
                 await axios.post(`${BASE_URL}/electricos/`, auto)
                 mostrarMensaje('Automóvil eléctrico guardado exitosamente.', 'exito')
                 limpiar()
@@ -90,6 +97,7 @@
         function limpiar() {
             ['id','marca','modelo','anio','color','precio','autonomiaKm','tiempoCargaHoras']
                 .forEach(id => document.getElementById(id).value = '')
+            document.getElementById('fechaRegistro').value = ''
             document.getElementById('cboBateria').selectedIndex = 0
             document.getElementById('mensaje').innerHTML = ''
         }

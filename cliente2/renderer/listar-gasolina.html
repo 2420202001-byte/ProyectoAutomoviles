@@ -14,8 +14,8 @@
         .btn-todos { background: #555; color: white; }
         .btn-volver { background: #1e1e1e; color: white; }
         table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
-        th { background: #963200; color: white; padding: 10px; text-align: left; font-size: 13px; }
-        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 13px; }
+        th { background: #963200; color: white; padding: 10px; text-align: left; font-size: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; }
         tr:hover { background: #fff5f0; }
         .total { margin-top: 10px; font-size: 13px; color: #555; font-style: italic; }
     </style>
@@ -37,7 +37,6 @@
         const axios = require('axios')
         const BASE_URL = 'http://localhost:8080'
 
-        // Observer pattern
         const observers = []
         function agregarObserver(fn) { observers.push(fn) }
         function notificarObservers(datos) { observers.forEach(fn => fn(datos)) }
@@ -68,9 +67,20 @@
         function mostrarDatos(lista) {
             notificarObservers(lista)
             let html = `<table>
-                <tr><th>ID</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Color</th><th>Precio</th><th>Consumo</th><th>Tanque</th><th>Cilindraje</th><th>Combustible</th></tr>`
+                <tr>
+                    <th>ID</th><th>Marca</th><th>Modelo</th><th>Año</th>
+                    <th>Color</th><th>Precio</th><th>Consumo</th><th>Tanque</th>
+                    <th>Cilindraje</th><th>Combustible</th><th>Fecha Registro</th>
+                </tr>`
             lista.forEach(a => {
-                html += `<tr><td>${a.id}</td><td>${a.marca}</td><td>${a.modelo}</td><td>${a.anio}</td><td>${a.color}</td><td>${a.precio}</td><td>${a.consumoLitrosPor100Km}</td><td>${a.capacidadTanqueLitros}</td><td>${a.cilindraje}</td><td>${a.tipoCombustible}</td></tr>`
+                const fecha = a.fechaRegistro ? a.fechaRegistro.split('T')[0] : 'N/A'
+                html += `<tr>
+                    <td>${a.id}</td><td>${a.marca}</td><td>${a.modelo}</td>
+                    <td>${a.anio}</td><td>${a.color}</td><td>$${a.precio.toLocaleString()}</td>
+                    <td>${a.consumoLitrosPor100Km}</td><td>${a.capacidadTanqueLitros}</td>
+                    <td>${a.cilindraje}</td><td>${a.tipoCombustible}</td>
+                    <td>${fecha}</td>
+                </tr>`
             })
             html += '</table>'
             document.getElementById('tabla').innerHTML = html
