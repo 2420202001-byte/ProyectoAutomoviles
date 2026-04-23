@@ -1,14 +1,18 @@
 {
-  "name": "cliente2",
+  "name": "autogestionsas-cliente2",
   "version": "1.0.0",
+  "description": "Cliente 2 - AutoGestión S.A.S - Electron.js",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "install-deps": "npm install"
+  },
+  "dependencies": {
+    "axios": "^1.6.0"
   },
   "devDependencies": {
     "electron": "^latest"
   },
-  "dependencies": {
-    "axios": "^latest"
-  }
+  "author": "Yaser Rondón, Ismael Cardozo, Juan Mancipe",
+  "license": "ISC"
 }

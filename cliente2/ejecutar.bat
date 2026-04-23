@@ -1,0 +1,3 @@
+@echo off
+echo Iniciando Cliente 2 - AutoGestion S.A.S...
+npm start
