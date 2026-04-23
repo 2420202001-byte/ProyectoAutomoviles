@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|c:\\users\\juane\\desktop\\automovilapp2\\cliente\\automovilappcliente\\automovilappcliente\\automovilappcliente\\formprincipal.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formprincipal.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\automovilappcliente\\formprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{93F89A0C-A1C2-445F-BD50-DEA16EB6685C}|AutoMovilAppCliente\\AutoMovilAppCliente.csproj|solutionrelative:automovilappcliente\\formprincipal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FormPrincipal.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.Designer.cs",
+              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormPrincipal.Designer.cs",
+              "ToolTip": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.Designer.cs",
+              "RelativeToolTip": "AutoMovilAppCliente\\FormPrincipal.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAmwAkAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T23:42:11.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FormPrincipal.cs",
+              "DocumentMoniker": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.cs",
+              "RelativeDocumentMoniker": "AutoMovilAppCliente\\FormPrincipal.cs",
+              "ToolTip": "C:\\Users\\juane\\Desktop\\AutoMovilApp2\\cliente\\AutomovilAppCliente\\AutomovilAppCliente\\AutoMovilAppCliente\\FormPrincipal.cs",
+              "RelativeToolTip": "AutoMovilAppCliente\\FormPrincipal.cs",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAqwHAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T23:41:33.587Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
