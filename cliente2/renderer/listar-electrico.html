@@ -66,15 +66,20 @@
         }
 
         function mostrarDatos(lista) {
-            notificarObservers(lista)
-            let html = `<table>
-                <tr><th>ID</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Color</th><th>Precio</th><th>Autonomía (km)</th><th>T.Carga (h)</th></tr>`
-            lista.forEach(a => {
-                html += `<tr><td>${a.id}</td><td>${a.marca}</td><td>${a.modelo}</td><td>${a.anio}</td><td>${a.color}</td><td>${a.precio}</td><td>${a.autonomiaKm}</td><td>${a.tiempoCargaHoras}</td></tr>`
-            })
-            html += '</table>'
-            document.getElementById('tabla').innerHTML = html
-        }
+    notificarObservers(lista)
+    let html = `<table>
+        <tr><th>ID</th><th>Marca</th><th>Modelo</th><th>Año</th><th>Color</th><th>Precio</th><th>Autonomía (km)</th><th>T.Carga (h)</th><th>Fecha Registro</th><th>Batería</th></tr>`
+    lista.forEach(a => {
+        const bateria = a.bateria ? `${a.bateria.idBateria} - ${a.bateria.marca}` : 'Sin batería'
+        html += `<tr>
+            <td>${a.id}</td><td>${a.marca}</td><td>${a.modelo}</td><td>${a.anio}</td>
+            <td>${a.color}</td><td>${a.precio}</td><td>${a.autonomiaKm}</td>
+            <td>${a.tiempoCargaHoras}</td><td>${a.fechaRegistro ?? ''}</td><td>${bateria}</td>
+        </tr>`
+    })
+    html += '</table>'
+    document.getElementById('tabla').innerHTML = html
+}
 
         cargarDatos()
     </script>

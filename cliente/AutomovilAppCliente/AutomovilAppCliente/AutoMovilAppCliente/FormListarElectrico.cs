@@ -123,10 +123,16 @@ namespace AutoMovilAppCliente
             dgv.Columns.Add("precio", "Precio");
             dgv.Columns.Add("autonomia", "Autonomía (km)");
             dgv.Columns.Add("tiempoCarga", "T. Carga (h)");
+            dgv.Columns.Add("fechaRegistro", "Fecha Registro");
+            dgv.Columns.Add("bateria", "Batería");
 
             var lista = JsonSerializer.Deserialize<JsonArray>(json);
             foreach (var item in lista)
             {
+                string bateria = "Sin batería";
+                if (item["bateria"] != null && item["bateria"].ToString() != "null")
+                    bateria = item["bateria"]["idBateria"]?.ToString() + " - " + item["bateria"]["marca"]?.ToString();
+
                 dgv.Rows.Add(
                     item["id"]?.ToString(),
                     item["marca"]?.ToString(),
@@ -135,11 +141,12 @@ namespace AutoMovilAppCliente
                     item["color"]?.ToString(),
                     item["precio"]?.ToString(),
                     item["autonomiaKm"]?.ToString(),
-                    item["tiempoCargaHoras"]?.ToString()
+                    item["tiempoCargaHoras"]?.ToString(),
+                    item["fechaRegistro"]?.ToString(),
+                    bateria
                 );
             }
             lblTotal.Text = "Total: " + lista.Count + " registros";
-
         }
 
         protected override void OnLoad(EventArgs e)

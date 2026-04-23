@@ -89,6 +89,12 @@ namespace AutoMovilAppCliente
             dgvResultado.Columns.Add("precio", "Precio");
             dgvResultado.Columns.Add("autonomia", "Autonomía (km)");
             dgvResultado.Columns.Add("tiempoCarga", "T. Carga (h)");
+            dgvResultado.Columns.Add("fechaRegistro", "Fecha Registro");
+            dgvResultado.Columns.Add("bateria", "Batería");
+
+            string bateria = "Sin batería";
+            if (auto["bateria"] != null && auto["bateria"].ToString() != "null")
+                bateria = auto["bateria"]["idBateria"]?.ToString() + " - " + auto["bateria"]["marca"]?.ToString();
 
             dgvResultado.Rows.Add(
                 auto["id"]?.ToString(),
@@ -98,7 +104,9 @@ namespace AutoMovilAppCliente
                 auto["color"]?.ToString(),
                 auto["precio"]?.ToString(),
                 auto["autonomiaKm"]?.ToString(),
-                auto["tiempoCargaHoras"]?.ToString()
+                auto["tiempoCargaHoras"]?.ToString(),
+                auto["fechaRegistro"]?.ToString(),
+                bateria
             );
         }
 
