@@ -18,6 +18,10 @@ namespace AutoMovilAppCliente
             // ── Menú ─────────────────────────────────────────────────────
             var menu = new MenuStrip { BackColor = Color.FromArgb(30, 30, 30), ForeColor = Color.White };
 
+            var mnuBateria = new ToolStripMenuItem("🔋 Batería") { ForeColor = Color.White };
+            mnuBateria.DropDownItems.Add("➕  Adicionar", null, (s, e) => new FormAdicionarBateria().Show());
+            mnuBateria.DropDownItems.Add("📋  Listar", null, (s, e) => new FormListarBateria().Show());
+
             var mnuElectrico = new ToolStripMenuItem("⚡ Eléctrico") { ForeColor = Color.White };
             mnuElectrico.DropDownItems.Add("➕  Adicionar", null, (s, e) => new FormAdicionarElectrico().Show());
             mnuElectrico.DropDownItems.Add("🔍  Buscar", null, (s, e) => new FormBuscarElectrico().Show());
@@ -40,6 +44,7 @@ namespace AutoMovilAppCliente
 
             menu.Items.Add(mnuElectrico);
             menu.Items.Add(mnuGasolina);
+            menu.Items.Add(mnuBateria);
             menu.Items.Add(mnuAyuda);
 
             // ── Panel de bienvenida ───────────────────────────────────────

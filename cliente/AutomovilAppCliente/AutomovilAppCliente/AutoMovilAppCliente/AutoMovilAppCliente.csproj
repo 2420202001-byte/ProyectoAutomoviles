@@ -93,6 +93,12 @@
     <Compile Include="FormActualizarGasolina.Designer.cs">
       <DependentUpon>FormActualizarGasolina.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormAdicionarBateria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAdicionarBateria.Designer.cs">
+      <DependentUpon>FormAdicionarBateria.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAdicionarElectrico.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +134,12 @@
     </Compile>
     <Compile Include="FormEliminarGasolina.Designer.cs">
       <DependentUpon>FormEliminarGasolina.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormListarBateria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormListarBateria.Designer.cs">
+      <DependentUpon>FormListarBateria.cs</DependentUpon>
     </Compile>
     <Compile Include="FormListarElectrico.cs">
       <SubType>Form</SubType>
