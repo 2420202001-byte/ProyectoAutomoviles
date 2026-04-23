@@ -1,0 +1,6 @@
+﻿cliente2/node_modules/
+servidor/**/target/
+cliente/**/.vs/
+cliente/**/bin/
+cliente/**/obj/
+*.vsidx
