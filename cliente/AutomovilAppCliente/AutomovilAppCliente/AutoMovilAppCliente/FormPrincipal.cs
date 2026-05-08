@@ -20,6 +20,9 @@ namespace AutoMovilAppCliente
 
             var mnuBateria = new ToolStripMenuItem("🔋 Batería") { ForeColor = Color.White };
             mnuBateria.DropDownItems.Add("➕  Adicionar", null, (s, e) => new FormAdicionarBateria().Show());
+            mnuBateria.DropDownItems.Add("🔍  Buscar", null, (s, e) => new FormBuscarBateria().Show());
+            mnuBateria.DropDownItems.Add("✏️   Actualizar", null, (s, e) => new FormActualizarBateria().Show());
+            mnuBateria.DropDownItems.Add("🗑️   Eliminar", null, (s, e) => new FormEliminarBateria().Show());
             mnuBateria.DropDownItems.Add("📋  Listar", null, (s, e) => new FormListarBateria().Show());
 
             var mnuElectrico = new ToolStripMenuItem("⚡ Eléctrico") { ForeColor = Color.White };

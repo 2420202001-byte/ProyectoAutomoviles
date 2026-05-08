@@ -81,6 +81,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoObserver.cs" />
+    <Compile Include="FormActualizarBateria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormActualizarBateria.Designer.cs">
+      <DependentUpon>FormActualizarBateria.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormActualizarElectrico.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +117,12 @@
     <Compile Include="FormAdicionarGasolina.Designer.cs">
       <DependentUpon>FormAdicionarGasolina.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormBuscarBateria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBuscarBateria.Designer.cs">
+      <DependentUpon>FormBuscarBateria.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormBuscarElectrico.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -122,6 +134,12 @@
     </Compile>
     <Compile Include="FormBuscarGasolina.Designer.cs">
       <DependentUpon>FormBuscarGasolina.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormEliminarBateria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEliminarBateria.Designer.cs">
+      <DependentUpon>FormEliminarBateria.cs</DependentUpon>
     </Compile>
     <Compile Include="FormEliminarElectrico.cs">
       <SubType>Form</SubType>
