@@ -33,24 +33,60 @@ AutoMovilApp/
 
 ---
 
-## 🚀 Cómo ejecutar
+# 🚀 Cómo ejecutar el proyecto
 
-### Servidor
-1. Abre la carpeta `servidor/` en VS Code
-2. Abre la terminal y ejecuta:
+## ⚙️ Requisitos previos
+- Java 21 o superior
+- Node.js (versión LTS)
+- Visual Studio (para el cliente C#)
+
+---
+
+## 1️⃣ Servidor Spring Boot
+
 ```bash
+# Navegar a la carpeta del servidor
+cd servidor/AutomovilApp
+
+# Ejecutar el servidor
 .\mvnw.cmd spring-boot:run
 ```
-3. El servidor quedará corriendo en `http://localhost:8080`
 
-### Cliente
-1. Abre la carpeta `cliente/` en Visual Studio
-2. Abre `AutoMovilAppCliente.sln`
-3. Presiona **F5** para ejecutar
+El servidor quedará corriendo en: `http://localhost:8080`
+
+---
+
+## 2️⃣ Cliente 1 — C# Windows Forms
+
+1. Abre Visual Studio
+2. Ve a `cliente/AutomovilAppCliente/AutomovilAppCliente`
+3. Abre el archivo `AutoMovilAppCliente.slnx`
+4. Presiona **F5** para ejecutar
 
 > ⚠️ El servidor debe estar corriendo antes de usar el cliente.
 
 ---
+
+## 3️⃣ Cliente 2 — Electron (JavaScript)
+
+```bash
+# Navegar a la carpeta del cliente 2
+cd cliente2
+
+# Instalar dependencias (solo la primera vez)
+npm install
+
+# Ejecutar el cliente
+npm start
+```
+
+> ⚠️ El servidor debe estar corriendo antes de usar el cliente.
+
+---
+
+## 🔁 Ejecutar todo junto (Windows)
+
+Doble clic en el archivo `iniciar-todo.bat` en la raíz del proyecto.
 
 ## 📡 Endpoints REST
 
