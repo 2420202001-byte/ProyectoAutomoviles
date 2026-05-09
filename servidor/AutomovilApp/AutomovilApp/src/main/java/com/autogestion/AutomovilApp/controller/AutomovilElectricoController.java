@@ -1,9 +1,10 @@
 package com.autogestion.AutomovilApp.controller;
 
 import com.autogestion.AutomovilApp.model.AutomovilElectrico;
-import com.autogestion.AutomovilApp.service.AutomovilElectricoService;
 import com.autogestion.AutomovilApp.model.AutomovilElectricoBuilder;
-
+import com.autogestion.AutomovilApp.repository.AutomovilElectricoRepository;
+import com.autogestion.AutomovilApp.service.AutomovilElectricoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -12,34 +13,40 @@ import java.util.List;
 @RequestMapping("/electricos")
 public class AutomovilElectricoController {
 
-    private final AutomovilElectricoService servicio = AutomovilElectricoService.getInstancia();
+    private final AutomovilElectricoService servicio;
+
+    @Autowired
+    public AutomovilElectricoController(AutomovilElectricoRepository repositorio) {
+        this.servicio = AutomovilElectricoService.getInstancia();
+        this.servicio.setRepositorio(repositorio);
+    }
 
     @GetMapping("/healthCheck")
     public String healthCheck() {
         return "Servicio Automóvil Eléctrico Ok!";
     }
 
-   @PostMapping("/")
-public ResponseEntity<AutomovilElectrico> agregar(@RequestBody AutomovilElectrico ae) {
-    if (ae == null) return ResponseEntity.noContent().build();
-    AutomovilElectrico nuevo = new AutomovilElectricoBuilder()
-            .setId(ae.getId())
-            .setMarca(ae.getMarca())
-            .setModelo(ae.getModelo())
-            .setAnio(ae.getAnio())
-            .setColor(ae.getColor())
-            .setPrecio(ae.getPrecio())
-            .setAutonomiaKm(ae.getAutonomiaKm())
-            .setTiempoCargaHoras(ae.getTiempoCargaHoras())
-            .setBateria(ae.getBateria())
-            .build();
-    servicio.agregar(nuevo);
-    return ResponseEntity.ok(nuevo);
-}
+    @PostMapping("/")
+    public ResponseEntity<AutomovilElectrico> agregar(@RequestBody AutomovilElectrico ae) {
+        if (ae == null) return ResponseEntity.noContent().build();
+        AutomovilElectrico nuevo = new AutomovilElectricoBuilder()
+                .setId(ae.getId())
+                .setMarca(ae.getMarca())
+                .setModelo(ae.getModelo())
+                .setAnio(ae.getAnio())
+                .setColor(ae.getColor())
+                .setPrecio(ae.getPrecio())
+                .setAutonomiaKm(ae.getAutonomiaKm())
+                .setTiempoCargaHoras(ae.getTiempoCargaHoras())
+                .setBateria(ae.getBateria())
+                .build();
+        servicio.agregar(nuevo);
+        return ResponseEntity.ok(nuevo);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<AutomovilElectrico> buscar(@PathVariable("id") String id) {
-        AutomovilElectrico ae = servicio.buscar(id);
+        AutomovilElectrico ae = servicio.buscarConBateria(id);
         if (ae == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(ae);
     }
@@ -64,15 +71,10 @@ public ResponseEntity<AutomovilElectrico> agregar(@RequestBody AutomovilElectric
         return ResponseEntity.ok(servicio.listar());
     }
 
-
     @GetMapping("/filtrar")
-public ResponseEntity<List<AutomovilElectrico>> filtrar(
-        @RequestParam(required = false) String marca,
-        @RequestParam(required = false) Integer anio) {
-    List<AutomovilElectrico> resultado = servicio.listar().stream()
-            .filter(a -> marca == null || a.getMarca().equalsIgnoreCase(marca))
-            .filter(a -> anio == null || a.getAnio() == anio)
-            .toList();
-    return ResponseEntity.ok(resultado);
-}
+    public ResponseEntity<List<AutomovilElectrico>> filtrar(
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) Integer anio) {
+        return ResponseEntity.ok(servicio.filtrar(marca, anio));
+    }
 }

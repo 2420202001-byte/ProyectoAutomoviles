@@ -1,15 +1,32 @@
 package com.autogestion.AutomovilApp.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@MappedSuperclass
 public abstract class Automovil {
+
+    @Id
+    @Column(name = "ID", nullable = false, unique = true)
     private String id;
+
+    @Column(name = "MARCA", nullable = false)
     private String marca;
+
+    @Column(name = "MODELO", nullable = false)
     private String modelo;
+
+    @Column(name = "ANIO", nullable = false)
     private int anio;
+
+    @Column(name = "COLOR")
     private String color;
+
+    @Column(name = "PRECIO", nullable = false)
     private double precio;
-    private LocalDateTime fechaRegistro;  // ← NUEVO
+
+    @Column(name = "FECHA_REGISTRO")
+    private LocalDateTime fechaRegistro;
 
     public Automovil() {}
 
@@ -20,7 +37,7 @@ public abstract class Automovil {
         this.anio = anio;
         this.color = color;
         this.precio = precio;
-        this.fechaRegistro = LocalDateTime.now();  // ← NUEVO
+        this.fechaRegistro = LocalDateTime.now();
     }
 
     public abstract double calcularCostoOperacion();

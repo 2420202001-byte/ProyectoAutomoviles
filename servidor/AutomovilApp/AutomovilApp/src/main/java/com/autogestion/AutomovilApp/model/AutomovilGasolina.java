@@ -1,19 +1,31 @@
 package com.autogestion.AutomovilApp.model;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "AUTOMOVIL_GASOLINA")
 public class AutomovilGasolina extends Automovil implements IAplicable {
+
+    @Column(name = "CONSUMO_LITROS_100KM", nullable = false)
     private double consumoLitrosPor100Km;
+
+    @Column(name = "CAPACIDAD_TANQUE_LITROS", nullable = false)
     private double capacidadTanqueLitros;
+
+    @Column(name = "CILINDRAJE", nullable = false)
     private int cilindraje;
+
+    @Column(name = "TIPO_COMBUSTIBLE", nullable = false)
     private String tipoCombustible;
+
+    @Column(name = "TRANSMISION")
     private String transmision;
 
     public AutomovilGasolina() {}
 
-    // Constructor de 10 argumentos, asigna 'Manual' como valor por defecto a transmision
     public AutomovilGasolina(String id, String marca, String modelo, int anio, String color,
-                             double precio, double consumoLitrosPor100Km, double capacidadTanqueLitros,
-                             int cilindraje, String tipoCombustible) {
+                              double precio, double consumoLitrosPor100Km, double capacidadTanqueLitros,
+                              int cilindraje, String tipoCombustible) {
         super(id, marca, modelo, anio, color, precio);
         this.consumoLitrosPor100Km = consumoLitrosPor100Km;
         this.capacidadTanqueLitros = capacidadTanqueLitros;
@@ -33,17 +45,14 @@ public class AutomovilGasolina extends Automovil implements IAplicable {
         this.transmision = transmision;
     }
 
-    // Polimorfismo: costo = consumo * precio galón * conversión
     @Override
     public double calcularCostoOperacion() {
-        double precioPorLitro = 9500.0; // COP por litro
-        return consumoLitrosPor100Km * precioPorLitro;
+        return consumoLitrosPor100Km * 9500.0;
     }
 
     @Override
     public String getTipoAutomovil() { return "Gasolina"; }
 
-    // IAplicable: calcula la autonomía máxima del tanque
     @Override
     public double calcular() {
         if (consumoLitrosPor100Km == 0) return 0;
@@ -58,22 +67,12 @@ public class AutomovilGasolina extends Automovil implements IAplicable {
 
     public double getConsumoLitrosPor100Km() { return consumoLitrosPor100Km; }
     public void setConsumoLitrosPor100Km(double v) { this.consumoLitrosPor100Km = v; }
-
     public double getCapacidadTanqueLitros() { return capacidadTanqueLitros; }
     public void setCapacidadTanqueLitros(double v) { this.capacidadTanqueLitros = v; }
-
     public int getCilindraje() { return cilindraje; }
     public void setCilindraje(int cilindraje) { this.cilindraje = cilindraje; }
-
     public String getTipoCombustible() { return tipoCombustible; }
     public void setTipoCombustible(String tipoCombustible) { this.tipoCombustible = tipoCombustible; }
-
-    public String getTransmision() {
-        return transmision;
-    }
-
-    public void setTransmision(String transmision) {
-        this.transmision = transmision;
-    }
+    public String getTransmision() { return transmision; }
+    public void setTransmision(String transmision) { this.transmision = transmision; }
 }
-

@@ -2,8 +2,9 @@ package com.autogestion.AutomovilApp.controller;
 
 import com.autogestion.AutomovilApp.model.AutomovilGasolina;
 import com.autogestion.AutomovilApp.model.AutomovilGasolinaBuilder;
+import com.autogestion.AutomovilApp.repository.AutomovilGasolinaRepository;
 import com.autogestion.AutomovilApp.service.AutomovilGasolinaService;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -12,7 +13,13 @@ import java.util.List;
 @RequestMapping("/gasolina")
 public class AutomovilGasolinaController {
 
-    private final AutomovilGasolinaService servicio = AutomovilGasolinaService.getInstancia();
+    private final AutomovilGasolinaService servicio;
+
+    @Autowired
+    public AutomovilGasolinaController(AutomovilGasolinaRepository repositorio) {
+        this.servicio = AutomovilGasolinaService.getInstancia();
+        this.servicio.setRepositorio(repositorio);
+    }
 
     @GetMapping("/healthCheck")
     public String healthCheck() {
@@ -20,24 +27,24 @@ public class AutomovilGasolinaController {
     }
 
     @PostMapping("/")
-public ResponseEntity<AutomovilGasolina> agregar(@RequestBody AutomovilGasolina ag) {
-    if (ag == null) return ResponseEntity.noContent().build();
-    AutomovilGasolina nuevo = new AutomovilGasolinaBuilder()
-            .setId(ag.getId())
-            .setMarca(ag.getMarca())
-            .setModelo(ag.getModelo())
-            .setAnio(ag.getAnio())
-            .setColor(ag.getColor())
-            .setPrecio(ag.getPrecio())
-            .setConsumoLitrosPor100Km(ag.getConsumoLitrosPor100Km())
-            .setCapacidadTanqueLitros(ag.getCapacidadTanqueLitros())
-            .setCilindraje(ag.getCilindraje())
-            .setTipoCombustible(ag.getTipoCombustible())
-            .setTransmision(ag.getTransmision())
-            .build();
-    servicio.agregar(nuevo);
-    return ResponseEntity.ok(nuevo);
-}
+    public ResponseEntity<AutomovilGasolina> agregar(@RequestBody AutomovilGasolina ag) {
+        if (ag == null) return ResponseEntity.noContent().build();
+        AutomovilGasolina nuevo = new AutomovilGasolinaBuilder()
+                .setId(ag.getId())
+                .setMarca(ag.getMarca())
+                .setModelo(ag.getModelo())
+                .setAnio(ag.getAnio())
+                .setColor(ag.getColor())
+                .setPrecio(ag.getPrecio())
+                .setConsumoLitrosPor100Km(ag.getConsumoLitrosPor100Km())
+                .setCapacidadTanqueLitros(ag.getCapacidadTanqueLitros())
+                .setCilindraje(ag.getCilindraje())
+                .setTipoCombustible(ag.getTipoCombustible())
+                .setTransmision(ag.getTransmision())
+                .build();
+        servicio.agregar(nuevo);
+        return ResponseEntity.ok(nuevo);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<AutomovilGasolina> buscar(@PathVariable("id") String id) {
@@ -66,23 +73,16 @@ public ResponseEntity<AutomovilGasolina> agregar(@RequestBody AutomovilGasolina 
         return ResponseEntity.ok(servicio.listar());
     }
 
-    
-@GetMapping("/filtrar")
-public ResponseEntity<List<AutomovilGasolina>> filtrar(
-        @RequestParam(required = false) String marca,
-        @RequestParam(required = false) Integer anio) {
-    List<AutomovilGasolina> resultado = servicio.listar().stream()
-            .filter(a -> marca == null || a.getMarca().equalsIgnoreCase(marca))
-            .filter(a -> anio == null || a.getAnio() == anio)
-            .toList();
-    return ResponseEntity.ok(resultado);
-
-        
-
-
-        
-        
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<AutomovilGasolina>> filtrar(
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) Integer anio) {
+        return ResponseEntity.ok(servicio.filtrar(marca, anio));
     }
 
-    
+    @GetMapping("/combustible")
+    public ResponseEntity<List<AutomovilGasolina>> filtrarPorCombustible(
+            @RequestParam String tipoCombustible) {
+        return ResponseEntity.ok(servicio.findByTipoCombustible(tipoCombustible));
+    }
 }

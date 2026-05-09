@@ -1,20 +1,21 @@
 package com.autogestion.AutomovilApp.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.autogestion.AutomovilApp.model.Bateria;
+import com.autogestion.AutomovilApp.repository.BateriaRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
+@Service
 public class BateriaService {
 
     private static BateriaService instancia;
-    private final List<Bateria> coleccion;
+    private BateriaRepository repositorio;
 
-    private BateriaService() {
-        coleccion = new ArrayList<>();
-        coleccion.add(new Bateria("BAT001", "Tesla",    75.0,  1500, 400.0));
-        coleccion.add(new Bateria("BAT002", "LG Chem",  60.0,  1200, 360.0));
-        coleccion.add(new Bateria("BAT003", "Panasonic",100.0, 2000, 800.0));
+    public BateriaService() {}
+
+    public BateriaService(BateriaRepository repositorio) {
+        this.repositorio = repositorio;
     }
 
     public static BateriaService getInstancia() {
@@ -24,31 +25,41 @@ public class BateriaService {
         return instancia;
     }
 
+    public void setRepositorio(BateriaRepository repositorio) {
+        this.repositorio = repositorio;
+    }
+
     public void agregar(Bateria b) {
-        coleccion.add(b);
+        repositorio.save(b);
     }
 
     public Bateria buscar(String id) {
-        return coleccion.stream()
-                .filter(b -> b.getIdBateria().equalsIgnoreCase(id))
-                .findFirst().orElse(null);
+        Optional<Bateria> result = repositorio.findById(id);
+        return result.orElse(null);
     }
 
     public boolean actualizar(String id, Bateria nueva) {
-        for (int i = 0; i < coleccion.size(); i++) {
-            if (coleccion.get(i).getIdBateria().equalsIgnoreCase(id)) {
-                coleccion.set(i, nueva);
-                return true;
-            }
-        }
-        return false;
+        if (!repositorio.existsById(id)) return false;
+        nueva.setIdBateria(id);
+        repositorio.save(nueva);
+        return true;
     }
 
     public boolean eliminar(String id) {
-        return coleccion.removeIf(b -> b.getIdBateria().equalsIgnoreCase(id));
+        if (!repositorio.existsById(id)) return false;
+        repositorio.deleteById(id);
+        return true;
     }
 
     public List<Bateria> listar() {
-        return new ArrayList<>(coleccion);
+        return repositorio.findAll();
+    }
+
+    public List<Bateria> findByMarca(String marca) {
+        return repositorio.findByMarca(marca);
+    }
+
+    public List<Bateria> findByCapacidadMinima(double capacidad) {
+        return repositorio.findByCapacidadMinima(capacidad);
     }
 }

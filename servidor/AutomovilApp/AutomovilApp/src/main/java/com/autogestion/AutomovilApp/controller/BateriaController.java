@@ -1,8 +1,9 @@
 package com.autogestion.AutomovilApp.controller;
 
 import com.autogestion.AutomovilApp.model.Bateria;
+import com.autogestion.AutomovilApp.repository.BateriaRepository;
 import com.autogestion.AutomovilApp.service.BateriaService;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,7 +12,13 @@ import java.util.List;
 @RequestMapping("/baterias")
 public class BateriaController {
 
-    private final BateriaService servicio = BateriaService.getInstancia();
+    private final BateriaService servicio;
+
+    @Autowired
+    public BateriaController(BateriaRepository repositorio) {
+        this.servicio = BateriaService.getInstancia();
+        this.servicio.setRepositorio(repositorio);
+    }
 
     @GetMapping("/healthCheck")
     public String healthCheck() {
@@ -50,5 +57,17 @@ public class BateriaController {
     @GetMapping("/")
     public ResponseEntity<List<Bateria>> listar() {
         return ResponseEntity.ok(servicio.listar());
+    }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<Bateria>> filtrarPorMarca(
+            @RequestParam String marca) {
+        return ResponseEntity.ok(servicio.findByMarca(marca));
+    }
+
+    @GetMapping("/capacidad")
+    public ResponseEntity<List<Bateria>> filtrarPorCapacidad(
+            @RequestParam double capacidad) {
+        return ResponseEntity.ok(servicio.findByCapacidadMinima(capacidad));
     }
 }
