@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using RestSharp;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace AutoMovilAppCliente
 {
@@ -13,6 +15,17 @@ namespace AutoMovilAppCliente
         private Label lblTotal;
         private TextBox txtFiltroMarca, txtFiltroAnio;
 
+        // Paleta de colores
+        private readonly Color colorPrimario = Color.FromArgb(15, 23, 42);       // Azul muy oscuro
+        private readonly Color colorAcento = Color.FromArgb(56, 189, 248);        // Azul eléctrico
+        private readonly Color colorFondo = Color.FromArgb(241, 245, 249);        // Gris claro
+        private readonly Color colorPanel = Color.FromArgb(255, 255, 255);        // Blanco
+        private readonly Color colorTexto = Color.FromArgb(30, 41, 59);           // Gris oscuro
+        private readonly Color colorSubTexto = Color.FromArgb(100, 116, 139);     // Gris medio
+        private readonly Color colorFilaImpar = Color.FromArgb(248, 250, 252);
+        private readonly Color colorFilaPar = Color.White;
+        private readonly Color colorHeader = Color.FromArgb(15, 23, 42);
+
         public FormListarElectrico()
         {
             CrearFormulario();
@@ -21,65 +34,211 @@ namespace AutoMovilAppCliente
 
         private void CrearFormulario()
         {
-            this.Text = "Listado de Automóviles Eléctricos";
-            this.Size = new System.Drawing.Size(900, 500);
+            this.Text = "AutoMóvil — Vehículos Eléctricos";
+            this.Size = new Size(1100, 620);
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = colorFondo;
+            this.Font = new Font("Segoe UI", 9f);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
 
-            var panelNorth = new FlowLayoutPanel();
-            panelNorth.Dock = DockStyle.Top;
-            panelNorth.Height = 50;
-            panelNorth.Padding = new Padding(10);
+            // ── HEADER ──────────────────────────────────────────────
+            var panelHeader = new Panel();
+            panelHeader.Dock = DockStyle.Top;
+            panelHeader.Height = 65;
+            panelHeader.BackColor = colorPrimario;
 
-            panelNorth.Controls.Add(new Label { Text = "Filtrar por marca:", AutoSize = true });
-            txtFiltroMarca = new TextBox { Width = 120 };
-            panelNorth.Controls.Add(txtFiltroMarca);
+            var lblTitulo = new Label();
+            lblTitulo.Text = "⚡  Listado de Automóviles Eléctricos";
+            lblTitulo.Font = new Font("Segoe UI Semibold", 14f, FontStyle.Bold);
+            lblTitulo.ForeColor = colorAcento;
+            lblTitulo.AutoSize = true;
+            lblTitulo.Location = new Point(20, 18);
 
-            var btnFiltrarMarca = new Button();
-            btnFiltrarMarca.Text = "Filtrar marca";
-            btnFiltrarMarca.BackColor = System.Drawing.Color.FromArgb(25, 70, 130);
-            btnFiltrarMarca.ForeColor = System.Drawing.Color.White;
+            panelHeader.Controls.Add(lblTitulo);
+
+            // ── BARRA DE FILTROS ─────────────────────────────────────
+            var panelFiltros = new Panel();
+            panelFiltros.Dock = DockStyle.Top;
+            panelFiltros.Height = 60;
+            panelFiltros.BackColor = colorPanel;
+            panelFiltros.Padding = new Padding(15, 10, 15, 10);
+
+            // Separador inferior del panel filtros
+            panelFiltros.Paint += (s, e) =>
+            {
+                e.Graphics.DrawLine(
+                    new Pen(Color.FromArgb(226, 232, 240), 1),
+                    0, panelFiltros.Height - 1,
+                    panelFiltros.Width, panelFiltros.Height - 1
+                );
+            };
+
+            int x = 15;
+
+            // Label Marca
+            var lblMarca = new Label();
+            lblMarca.Text = "Marca";
+            lblMarca.Font = new Font("Segoe UI", 8f, FontStyle.Bold);
+            lblMarca.ForeColor = colorSubTexto;
+            lblMarca.Location = new Point(x, 12);
+            lblMarca.AutoSize = true;
+            panelFiltros.Controls.Add(lblMarca);
+
+            txtFiltroMarca = CrearTextBox(x, 28, 140);
+            panelFiltros.Controls.Add(txtFiltroMarca);
+            x += 150;
+
+            var btnFiltrarMarca = CrearBoton("Filtrar marca", x, 26, colorAcento, colorPrimario);
             btnFiltrarMarca.Click += (s, e) => FiltrarPorMarca();
-            panelNorth.Controls.Add(btnFiltrarMarca);
+            panelFiltros.Controls.Add(btnFiltrarMarca);
+            x += btnFiltrarMarca.Width + 25;
 
-            panelNorth.Controls.Add(new Label { Text = "Filtrar por año:", AutoSize = true });
-            txtFiltroAnio = new TextBox { Width = 80 };
-            panelNorth.Controls.Add(txtFiltroAnio);
+            // Separador vertical
+            var sep = new Panel();
+            sep.BackColor = Color.FromArgb(226, 232, 240);
+            sep.Location = new Point(x, 10);
+            sep.Size = new Size(1, 38);
+            panelFiltros.Controls.Add(sep);
+            x += 15;
 
-            var btnFiltrarAnio = new Button();
-            btnFiltrarAnio.Text = "Filtrar año";
-            btnFiltrarAnio.BackColor = System.Drawing.Color.FromArgb(25, 70, 130);
-            btnFiltrarAnio.ForeColor = System.Drawing.Color.White;
+            // Label Año
+            var lblAnio = new Label();
+            lblAnio.Text = "Año";
+            lblAnio.Font = new Font("Segoe UI", 8f, FontStyle.Bold);
+            lblAnio.ForeColor = colorSubTexto;
+            lblAnio.Location = new Point(x, 12);
+            lblAnio.AutoSize = true;
+            panelFiltros.Controls.Add(lblAnio);
+
+            txtFiltroAnio = CrearTextBox(x, 28, 90);
+            panelFiltros.Controls.Add(txtFiltroAnio);
+            x += 100;
+
+            var btnFiltrarAnio = CrearBoton("Filtrar año", x, 26, colorAcento, colorPrimario);
             btnFiltrarAnio.Click += (s, e) => FiltrarPorAnio();
-            panelNorth.Controls.Add(btnFiltrarAnio);
+            panelFiltros.Controls.Add(btnFiltrarAnio);
+            x += btnFiltrarAnio.Width + 25;
 
-            var btnTodos = new Button();
-            btnTodos.Text = "Ver Todos";
+            // Separador vertical
+            var sep2 = new Panel();
+            sep2.BackColor = Color.FromArgb(226, 232, 240);
+            sep2.Location = new Point(x, 10);
+            sep2.Size = new Size(1, 38);
+            panelFiltros.Controls.Add(sep2);
+            x += 15;
+
+            var btnTodos = CrearBoton("Ver Todos", x, 26, Color.FromArgb(226, 232, 240), colorTexto);
             btnTodos.Click += (s, e) => CargarDatos();
-            panelNorth.Controls.Add(btnTodos);
+            panelFiltros.Controls.Add(btnTodos);
 
-            // Inicializar dgv antes de usarlo
+            // ── PANEL TABLA ──────────────────────────────────────────
+            var panelTabla = new Panel();
+            panelTabla.Dock = DockStyle.Fill;
+            panelTabla.BackColor = colorFondo;
+            panelTabla.Padding = new Padding(15, 10, 15, 10);
+
             dgv = new DataGridView();
             dgv.Dock = DockStyle.Fill;
             dgv.ReadOnly = true;
+            dgv.AllowUserToAddRows = false;
+            dgv.AllowUserToDeleteRows = false;
+            dgv.AllowUserToResizeRows = false;
+            dgv.MultiSelect = false;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9, System.Drawing.FontStyle.Bold);
+            dgv.BorderStyle = BorderStyle.None;
+            dgv.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.GridColor = Color.FromArgb(226, 232, 240);
+            dgv.BackgroundColor = colorPanel;
+            dgv.RowHeadersVisible = false;
+
+            // Header
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = colorHeader;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = colorAcento;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            dgv.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = colorHeader;
+            dgv.ColumnHeadersHeight = 38;
+            dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgv.EnableHeadersVisualStyles = false;
+
+            // Filas
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9f);
+            dgv.DefaultCellStyle.ForeColor = colorTexto;
+            dgv.DefaultCellStyle.Padding = new Padding(8, 4, 0, 4);
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(224, 242, 254);
+            dgv.DefaultCellStyle.SelectionForeColor = colorTexto;
+            dgv.RowTemplate.Height = 34;
+
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = colorFilaImpar;
+            dgv.RowsDefaultCellStyle.BackColor = colorFilaPar;
+
+            panelTabla.Controls.Add(dgv);
+
+            // ── FOOTER ───────────────────────────────────────────────
+            var panelFooter = new Panel();
+            panelFooter.Dock = DockStyle.Bottom;
+            panelFooter.Height = 36;
+            panelFooter.BackColor = colorPanel;
+            panelFooter.Paint += (s, e) =>
+            {
+                e.Graphics.DrawLine(
+                    new Pen(Color.FromArgb(226, 232, 240), 1),
+                    0, 0, panelFooter.Width, 0
+                );
+            };
 
             lblTotal = new Label();
-            lblTotal.Dock = DockStyle.Bottom;
-            lblTotal.Height = 25;
             lblTotal.Text = "Total: 0 registros";
+            lblTotal.Font = new Font("Segoe UI", 9f);
+            lblTotal.ForeColor = colorSubTexto;
+            lblTotal.Location = new Point(20, 10);
+            lblTotal.AutoSize = true;
+            panelFooter.Controls.Add(lblTotal);
 
-            this.Controls.Add(dgv);
-            this.Controls.Add(lblTotal);
-            this.Controls.Add(panelNorth);
+            // ── AGREGAR AL FORM (orden importa con Dock) ─────────────
+            this.Controls.Add(panelTabla);
+            this.Controls.Add(panelFooter);
+            this.Controls.Add(panelFiltros);
+            this.Controls.Add(panelHeader);
         }
 
+        // ── HELPERS ─────────────────────────────────────────────────
+        private TextBox CrearTextBox(int x, int y, int width)
+        {
+            var tb = new TextBox();
+            tb.Location = new Point(x, y);
+            tb.Width = width;
+            tb.Font = new Font("Segoe UI", 9f);
+            tb.BorderStyle = BorderStyle.FixedSingle;
+            tb.BackColor = colorFondo;
+            tb.ForeColor = colorTexto;
+            return tb;
+        }
+
+        private Button CrearBoton(string texto, int x, int y, Color back, Color fore)
+        {
+            var btn = new Button();
+            btn.Text = texto;
+            btn.Location = new Point(x, y);
+            btn.AutoSize = false;
+            btn.Size = new Size(100, 28);
+            btn.BackColor = back;
+            btn.ForeColor = fore;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            btn.Cursor = Cursors.Hand;
+            return btn;
+        }
+
+        // ── LÓGICA (sin cambios) ─────────────────────────────────────
         private void CargarDatos()
         {
             var client = new RestClient(BASE_URL);
             var request = new RestRequest("/electricos/", Method.Get);
             var response = client.Execute(request);
-
             if (!response.IsSuccessful) return;
             MostrarDatos(response.Content);
         }
@@ -88,11 +247,9 @@ namespace AutoMovilAppCliente
         {
             string marca = txtFiltroMarca.Text.Trim();
             if (string.IsNullOrEmpty(marca)) { CargarDatos(); return; }
-
             var client = new RestClient(BASE_URL);
             var request = new RestRequest($"/electricos/filtrar?marca={marca}", Method.Get);
             var response = client.Execute(request);
-
             if (!response.IsSuccessful) return;
             MostrarDatos(response.Content);
         }
@@ -101,11 +258,9 @@ namespace AutoMovilAppCliente
         {
             string anio = txtFiltroAnio.Text.Trim();
             if (string.IsNullOrEmpty(anio)) { CargarDatos(); return; }
-
             var client = new RestClient(BASE_URL);
             var request = new RestRequest($"/electricos/filtrar?anio={anio}", Method.Get);
             var response = client.Execute(request);
-
             if (!response.IsSuccessful) return;
             MostrarDatos(response.Content);
         }
@@ -146,7 +301,7 @@ namespace AutoMovilAppCliente
                     bateria
                 );
             }
-            lblTotal.Text = "Total: " + lista.Count + " registros";
+            lblTotal.Text = $"Total: {lista.Count} registros";
         }
 
         protected override void OnLoad(EventArgs e)
@@ -161,9 +316,6 @@ namespace AutoMovilAppCliente
             AutoObservable.GetInstancia().EliminarObserver(this);
         }
 
-        public void Actualizar()
-        {
-            CargarDatos();
-        }
+        public void Actualizar() => CargarDatos();
     }
 }
