@@ -1,0 +1,163 @@
+﻿using System;
+using System.Windows.Forms;
+using RestSharp;
+
+namespace AutoMovilAppCliente
+{
+    public partial class FormAdicionarGasolina : Form
+    {
+        private const string BASE_URL = "http://localhost:8080";
+        // Paleta Gasolina (Naranja/Cálido)
+        private readonly Color colorPrimario = Color.FromArgb(67, 20, 7);
+        private readonly Color colorAcento = Color.FromArgb(249, 115, 22);
+        private readonly Color colorFondo = Color.FromArgb(255, 247, 237);
+        private readonly Color colorPanel = Color.White;
+        private readonly Color colorTexto = Color.FromArgb(15, 23, 42);
+        private readonly Color colorSubTexto = Color.FromArgb(100, 116, 139);
+        private TextBox txtId, txtMarca, txtModelo, txtAnio, txtColor, txtPrecio, txtConsumo, txtTanque, txtCilindraje;
+        private ComboBox cboCombustible;
+
+        public FormAdicionarGasolina()
+        {
+            CrearFormulario();
+        }
+
+        private void CrearFormulario()
+        {
+            this.Text = "Adicionar Automóvil a Gasolina";
+            this.Size = new System.Drawing.Size(480, 560);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor = colorFondo;
+            this.Font = new Font("Segoe UI", 9f);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+
+            // Header
+            var panelHeader = new Panel { Dock = DockStyle.Top, Height = 65, BackColor = colorPrimario };
+            var lblTitulo = new Label { Text = "⛽  Adicionar Automóvil a Gasolina", Font = new Font("Segoe UI Semibold", 14f, FontStyle.Bold), ForeColor = colorAcento, AutoSize = true, Location = new Point(20, 18) };
+            panelHeader.Controls.Add(lblTitulo);
+
+            var layout = new TableLayoutPanel();
+            layout.ColumnCount = 2;
+            layout.Dock = DockStyle.Fill;
+            layout.Padding = new Padding(15);
+            layout.AutoScroll = true;
+
+            string[] labels = { "ID:", "Marca:", "Modelo:", "Año:", "Color:", "Precio ($):", "Consumo (L/100km):", "Tanque (L):", "Cilindraje (cc):", "Combustible:" };
+            cboCombustible = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9f), BackColor = colorFondo, ForeColor = colorTexto };
+            cboCombustible.Items.AddRange(new string[] { "Gasolina corriente", "Gasolina extra", "Premium" });
+            cboCombustible.SelectedIndex = 0;
+
+            System.Windows.Forms.Control[] campos = {
+                txtId = CrearTextBox(),
+                txtMarca = CrearTextBox(),
+                txtModelo = CrearTextBox(),
+                txtAnio = CrearTextBox(),
+                txtColor = CrearTextBox(),
+                txtPrecio = CrearTextBox(),
+                txtConsumo = CrearTextBox(),
+                txtTanque = CrearTextBox(),
+                txtCilindraje = CrearTextBox(),
+                cboCombustible
+            };
+
+            for (int i = 0; i < labels.Length; i++)
+            {
+                var lbl = new Label { Text = labels[i], AutoSize = true, Anchor = AnchorStyles.Left, Font = new Font("Segoe UI", 8f, FontStyle.Bold), ForeColor = colorSubTexto };
+                layout.Controls.Add(lbl);
+                campos[i].Dock = DockStyle.Fill;
+                layout.Controls.Add(campos[i]);
+            }
+
+            var btnGuardar = new Button();
+            btnGuardar.Text = "Guardar";
+            btnGuardar.BackColor = colorAcento;
+            btnGuardar.ForeColor = Color.White;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.Cursor = Cursors.Hand;
+            btnGuardar.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            btnGuardar.Width = 120;
+            btnGuardar.Click += BtnGuardar_Click;
+
+            var btnLimpiar = new Button();
+            btnLimpiar.Text = "Limpiar";
+            btnLimpiar.BackColor = colorPanel;
+            btnLimpiar.ForeColor = colorTexto;
+            btnLimpiar.FlatStyle = FlatStyle.Flat;
+            btnLimpiar.FlatAppearance.BorderSize = 0;
+            btnLimpiar.Cursor = Cursors.Hand;
+            btnLimpiar.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            btnLimpiar.Width = 120;
+            btnLimpiar.Click += (s, e) => Limpiar();
+
+            var panelBtns = new FlowLayoutPanel { AutoSize = true, Margin = new Padding(0, 10, 0, 0) };
+            panelBtns.Controls.Add(btnGuardar);
+            panelBtns.Controls.Add(btnLimpiar);
+
+            var container = new Panel { Dock = DockStyle.Fill, BackColor = colorPanel };
+            container.Controls.Add(layout);
+
+            this.Controls.Add(container);
+            this.Controls.Add(panelBtns);
+            this.Controls.Add(panelHeader);
+        }
+
+        private TextBox CrearTextBox()
+        {
+            return new TextBox { Width = 350, BorderStyle = BorderStyle.FixedSingle, BackColor = colorFondo, ForeColor = colorTexto, Font = new Font("Segoe UI", 9f) };
+        }
+
+        private void BtnGuardar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var auto = new
+                {
+                    id = txtId.Text.Trim(),
+                    marca = txtMarca.Text.Trim(),
+                    modelo = txtModelo.Text.Trim(),
+                    anio = int.Parse(txtAnio.Text.Trim()),
+                    color = txtColor.Text.Trim(),
+                    precio = double.Parse(txtPrecio.Text.Trim()),
+                    consumoLitrosPor100Km = double.Parse(txtConsumo.Text.Trim()),
+                    capacidadTanqueLitros = double.Parse(txtTanque.Text.Trim()),
+                    cilindraje = int.Parse(txtCilindraje.Text.Trim()),
+                    tipoCombustible = cboCombustible.SelectedItem.ToString(),
+                    transmision = "Manual"
+                };
+
+                var client = new RestClient(BASE_URL);
+                var request = new RestRequest("/gasolina/", Method.Post);
+                request.AddJsonBody(auto);
+                var response = client.Execute(request);
+
+                if (response.IsSuccessful)
+                {
+                    MessageBox.Show("Automóvil a gasolina guardado exitosamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AutoObservable.GetInstancia().NotificarObservers();
+                    Limpiar();
+                }
+                else
+                {
+                    MessageBox.Show("Error al guardar: " + response.StatusCode, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void Limpiar()
+        {
+            txtId.Text = ""; txtMarca.Text = ""; txtModelo.Text = "";
+            txtAnio.Text = ""; txtColor.Text = ""; txtPrecio.Text = "";
+            txtConsumo.Text = ""; txtTanque.Text = ""; txtCilindraje.Text = "";
+            cboCombustible.SelectedIndex = 0;
+        }
+    }
+}

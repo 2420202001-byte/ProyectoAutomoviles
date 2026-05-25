@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Mantenimiento</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; padding: 30px; }
+        h2 { color: #7c3aed; margin-bottom: 20px; }
+        .filtros { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; width: 180px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .btn-filtrar { background: #7c3aed; color: white; }
+        .btn-todos { background: #555; color: white; }
+        .btn-volver { background: #1e1e1e; color: white; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; }
+        th { background: #7c3aed; color: white; padding: 10px; text-align: left; font-size: 12px; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 12px; }
+        tr:hover { background: #f7f1ff; }
+        .total { margin-top: 10px; font-size: 13px; color: #555; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h2>📋 Listado de Mantenimientos</h2>
+    <div class="filtros">
+        <input id="txtTipo" type="text" placeholder="Filtrar por tipo">
+        <button class="btn btn-filtrar" onclick="filtrarTipo()">Filtrar tipo</button>
+        <input id="txtAuto" type="text" placeholder="Filtrar por ID de auto">
+        <button class="btn btn-filtrar" onclick="filtrarAuto()">Filtrar auto</button>
+        <button class="btn btn-todos" onclick="cargarDatos()">Ver Todos</button>
+        <button class="btn btn-volver" onclick="location.href='index.html'">← Volver</button>
+    </div>
+    <div id="tabla"></div>
+    <div class="total" id="total"></div>
+
+    <script>
+        const axios = require('axios')
+        const BASE_URL = 'http://localhost:8080'
+
+        function formatearFecha(fecha) {
+            if (!fecha) return 'N/A'
+            return fecha.split('T')[0]
+        }
+
+        async function cargarDatos() {
+            const res = await axios.get(`${BASE_URL}/mantenimientos/`)
+            mostrarDatos(res.data)
+        }
+
+        async function filtrarTipo() {
+            const tipo = document.getElementById('txtTipo').value.trim()
+            if (!tipo) { cargarDatos(); return }
+            const res = await axios.get(`${BASE_URL}/mantenimientos/filtrar?tipo=${encodeURIComponent(tipo)}`)
+            mostrarDatos(res.data)
+        }
+
+        async function filtrarAuto() {
+            const idAuto = document.getElementById('txtAuto').value.trim()
+            if (!idAuto) { cargarDatos(); return }
+            const res = await axios.get(`${BASE_URL}/mantenimientos/auto?idAuto=${encodeURIComponent(idAuto)}`)
+            mostrarDatos(res.data)
+        }
+
+        function mostrarDatos(lista) {
+            document.getElementById('total').textContent = `Total: ${lista.length} registros`
+            let html = `<table>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th>Kilometraje</th>
+                    <th>Automóvil</th>
+                    <th>Marca</th>
+                </tr>`
+
+            lista.forEach(m => {
+                const idAuto = m.idAutomovilGasolina || 'N/A'
+                const marcaAuto = m.marcaAutomovilGasolina || 'N/A'
+                html += `<tr>
+                    <td>${m.idMantenimiento}</td>
+                    <td>${m.tipo}</td>
+                    <td>${m.descripcion}</td>
+                    <td>$${Number(m.costo || 0).toLocaleString()}</td>
+                    <td>${formatearFecha(m.fechaMantenimiento)}</td>
+                    <td>${m.kilometraje}</td>
+                    <td>${idAuto}</td>
+                    <td>${marcaAuto}</td>
+                </tr>`
+            })
+
+            html += '</table>'
+            document.getElementById('tabla').innerHTML = html
+        }
+
+        cargarDatos()
+    </script>
+</body>
+</html>

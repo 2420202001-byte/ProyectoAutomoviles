@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actualizar Mantenimiento</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; padding: 30px; }
+        h2 { color: #7c3aed; margin-bottom: 20px; }
+        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 10px; }
+        label { display: block; margin-bottom: 4px; font-size: 13px; color: #555; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; margin-right: 8px; }
+        .btn-buscar { background: #7c3aed; color: white; }
+        .btn-actualizar { background: #2e8b57; color: white; }
+        .btn-volver { background: #1e1e1e; color: white; }
+        #panelForm { display: none; margin-top: 20px; }
+        .mensaje { margin-top: 15px; padding: 10px; border-radius: 4px; font-size: 13px; }
+        .exito { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h2>✏️ Actualizar Mantenimiento</h2>
+    <div class="search-bar">
+        <input id="txtIdBuscar" type="text" placeholder="Ingrese el ID de mantenimiento">
+        <button class="btn btn-buscar" onclick="buscar()">Buscar</button>
+        <button class="btn btn-volver" onclick="location.href='index.html'">← Volver</button>
+    </div>
+
+    <div id="panelForm">
+        <div class="form-group"><label>ID Mantenimiento:</label><input id="idMantenimiento" type="text"></div>
+        <div class="form-group"><label>Tipo:</label><input id="tipo" type="text"></div>
+        <div class="form-group"><label>Descripción:</label><input id="descripcion" type="text"></div>
+        <div class="form-group"><label>Costo ($):</label><input id="costo" type="number" step="0.01"></div>
+        <div class="form-group"><label>Kilometraje:</label><input id="kilometraje" type="number"></div>
+        <div class="form-group"><label>Fecha de mantenimiento:</label><input id="fechaMantenimiento" type="datetime-local"></div>
+        <div class="form-group">
+            <label>Automóvil a gasolina:</label>
+            <select id="idAuto"></select>
+        </div>
+        <button class="btn btn-actualizar" onclick="actualizar()">Actualizar</button>
+    </div>
+    <div id="mensaje"></div>
+
+    <script>
+        const axios = require('axios')
+        const BASE_URL = 'http://localhost:8080'
+        let idOriginal = ''
+
+        function mostrarMensaje(texto, tipo) {
+            document.getElementById('mensaje').innerHTML = `<div class="mensaje ${tipo}">${texto}</div>`
+        }
+
+        async function cargarAutos() {
+            try {
+                const res = await axios.get(`${BASE_URL}/gasolina/`)
+                const select = document.getElementById('idAuto')
+                select.innerHTML = '<option value="">-- Seleccione un automóvil --</option>'
+                res.data.forEach(a => {
+                    const option = document.createElement('option')
+                    option.value = a.id
+                    option.textContent = `${a.id} - ${a.marca} ${a.modelo}`
+                    select.appendChild(option)
+                })
+            } catch (e) {
+                mostrarMensaje('No se pudieron cargar los automóviles: ' + e.message, 'error')
+            }
+        }
+
+        function fillDate(value) {
+            if (!value) return ''
+            return value.replace('Z', '').slice(0, 16)
+        }
+
+        async function buscar() {
+            const id = document.getElementById('txtIdBuscar').value.trim()
+            if (!id) { alert('Ingrese un ID.'); return }
+
+            try {
+                const res = await axios.get(`${BASE_URL}/mantenimientos/${id}`)
+                const m = res.data
+                const auto = m.automovilGasolina || {}
+                idOriginal = id
+
+                document.getElementById('idMantenimiento').value = m.idMantenimiento
+                document.getElementById('tipo').value = m.tipo
+                document.getElementById('descripcion').value = m.descripcion
+                document.getElementById('costo').value = m.costo
+                document.getElementById('kilometraje').value = m.kilometraje
+                document.getElementById('fechaMantenimiento').value = fillDate(m.fechaMantenimiento)
+                document.getElementById('idAuto').value = auto.id || ''
+                document.getElementById('panelForm').style.display = 'block'
+            } catch (e) {
+                mostrarMensaje(`No se encontró ningún mantenimiento con ID: ${id}`, 'error')
+            }
+        }
+
+        async function actualizar() {
+            try {
+                const idAuto = document.getElementById('idAuto').value
+                if (!idAuto) {
+                    mostrarMensaje('Seleccione un automóvil para el mantenimiento.', 'error')
+                    return
+                }
+
+                const mantenimiento = {
+                    idMantenimiento: document.getElementById('idMantenimiento').value.trim(),
+                    tipo: document.getElementById('tipo').value.trim(),
+                    descripcion: document.getElementById('descripcion').value.trim(),
+                    costo: parseFloat(document.getElementById('costo').value),
+                    fechaMantenimiento: document.getElementById('fechaMantenimiento').value ? `${document.getElementById('fechaMantenimiento').value}:00` : '',
+                    kilometraje: parseInt(document.getElementById('kilometraje').value),
+                    automovilGasolina: { id: idAuto }
+                }
+
+                await axios.put(`${BASE_URL}/mantenimientos/${idOriginal}`, mantenimiento)
+                mostrarMensaje('Actualizado correctamente.', 'exito')
+                document.getElementById('panelForm').style.display = 'none'
+            } catch (e) {
+                mostrarMensaje('Error al actualizar: ' + e.message, 'error')
+            }
+        }
+
+        cargarAutos()
+    </script>
+</body>
+</html>

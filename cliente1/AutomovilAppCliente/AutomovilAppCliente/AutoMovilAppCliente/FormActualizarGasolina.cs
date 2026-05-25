@@ -1,0 +1,170 @@
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using RestSharp;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+
+namespace AutoMovilAppCliente
+{
+    public partial class FormActualizarGasolina : Form
+    {
+        private const string BASE_URL = "http://localhost:8080";
+        // Paleta Gasolina (Naranja/Cálido)
+        private readonly Color colorPrimario = Color.FromArgb(67, 20, 7);
+        private readonly Color colorAcento = Color.FromArgb(249, 115, 22);
+        private readonly Color colorFondo = Color.FromArgb(255, 247, 237);
+        private readonly Color colorPanel = Color.White;
+        private readonly Color colorTexto = Color.FromArgb(15, 23, 42);
+        private readonly Color colorSubTexto = Color.FromArgb(100, 116, 139);
+
+        private TextBox txtIdBuscar, txtId, txtMarca, txtModelo, txtAnio, txtColor, txtPrecio, txtConsumo, txtTanque, txtCilindraje;
+        private ComboBox cboCombustible;
+        private Panel panelForm;
+
+        public FormActualizarGasolina()
+        {
+            CrearFormulario();
+            // Aplicar estilo visual
+            this.BackColor = colorFondo;
+            this.Font = new Font("Segoe UI", 9f);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+        }
+
+        private void CrearFormulario()
+        {
+            this.Text = "Actualizar Automóvil a Gasolina";
+            this.Size = new System.Drawing.Size(520, 640);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Header
+            var panelHeader = new Panel { Dock = DockStyle.Top, Height = 65, BackColor = colorPrimario };
+            var lblTitulo = new Label { Text = "⛽  Actualizar Automóvil a Gasolina", Font = new Font("Segoe UI Semibold", 14f, FontStyle.Bold), ForeColor = colorAcento, AutoSize = true, Location = new Point(20, 18) };
+            panelHeader.Controls.Add(lblTitulo);
+
+            var panelBusqueda = new Panel { Dock = DockStyle.Top, Height = 55, BackColor = colorPanel, Padding = new Padding(15, 10, 15, 10) };
+            var lblPaso = new Label { Text = "Paso 1 — ID Automóvil", Font = new Font("Segoe UI", 8f, FontStyle.Bold), ForeColor = colorSubTexto, Location = new Point(15, 10), AutoSize = true };
+            txtIdBuscar = new TextBox { Location = new Point(15, 27), Width = 220, Font = new Font("Segoe UI", 9f), BorderStyle = BorderStyle.FixedSingle, BackColor = colorFondo, ForeColor = colorTexto };
+            var btnBuscar = new Button { Text = "🔍 Buscar", Location = new Point(245, 25), Size = new Size(110, 28), BackColor = colorAcento, ForeColor = colorPrimario, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 9f, FontStyle.Bold), Cursor = Cursors.Hand };
+            btnBuscar.FlatAppearance.BorderSize = 0; btnBuscar.Click += BtnBuscar_Click;
+            panelBusqueda.Controls.Add(lblPaso); panelBusqueda.Controls.Add(txtIdBuscar); panelBusqueda.Controls.Add(btnBuscar);
+
+            panelForm = new Panel { Dock = DockStyle.Fill, BackColor = colorPanel, Enabled = false, Padding = new Padding(20) };
+            var layout = new TableLayoutPanel { ColumnCount = 2, Dock = DockStyle.Fill, Padding = new Padding(15), AutoScroll = true };
+
+            cboCombustible = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Font = new Font("Segoe UI", 9f), BackColor = colorFondo, ForeColor = colorTexto };
+            cboCombustible.Items.AddRange(new string[] { "Gasolina corriente", "Gasolina extra", "Premium" });
+            cboCombustible.SelectedIndex = 0;
+
+            string[] labels = { "ID:", "Marca:", "Modelo:", "Año:", "Color:", "Precio ($):", "Consumo (L/100km):", "Tanque (L):", "Cilindraje (cc):", "Combustible:" };
+            System.Windows.Forms.Control[] campos = {
+                txtId = CrearTextBox(),
+                txtMarca = CrearTextBox(),
+                txtModelo = CrearTextBox(),
+                txtAnio = CrearTextBox(),
+                txtColor = CrearTextBox(),
+                txtPrecio = CrearTextBox(),
+                txtConsumo = CrearTextBox(),
+                txtTanque = CrearTextBox(),
+                txtCilindraje = CrearTextBox(),
+                cboCombustible
+            };
+
+            for (int i = 0; i < labels.Length; i++)
+            {
+                var lbl = new Label { Text = labels[i], AutoSize = true, Anchor = AnchorStyles.Left, Font = new Font("Segoe UI", 8f, FontStyle.Bold), ForeColor = colorSubTexto };
+                layout.Controls.Add(lbl);
+                campos[i].Dock = DockStyle.Fill;
+                layout.Controls.Add(campos[i]);
+            }
+
+            var btnActualizar = new Button { Text = "✏️ Actualizar", BackColor = colorAcento, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Cursor = Cursors.Hand, Font = new Font("Segoe UI", 9f, FontStyle.Bold) };
+            btnActualizar.FlatAppearance.BorderSize = 0; btnActualizar.Click += BtnActualizar_Click;
+            layout.SetColumnSpan(btnActualizar, 2); layout.Controls.Add(btnActualizar);
+
+            panelForm.Controls.Add(layout);
+            this.Controls.Add(panelForm);
+            this.Controls.Add(panelBusqueda);
+            this.Controls.Add(panelHeader);
+        }
+
+        private TextBox CrearTextBox()
+        {
+            return new TextBox { Width = 350, BorderStyle = BorderStyle.FixedSingle, BackColor = colorFondo, ForeColor = colorTexto, Font = new Font("Segoe UI", 9f) };
+        }
+
+        private void BtnBuscar_Click(object sender, EventArgs e)
+        {
+            string id = txtIdBuscar.Text.Trim();
+            if (string.IsNullOrEmpty(id)) { MessageBox.Show("Ingrese un ID."); return; }
+
+            var client = new RestClient(BASE_URL);
+            var request = new RestRequest($"/gasolina/{id}", Method.Get);
+            var response = client.Execute(request);
+
+            if (!response.IsSuccessful)
+            {
+                MessageBox.Show("No se encontró ningún automóvil con ID: " + id);
+                return;
+            }
+
+            var auto = JsonSerializer.Deserialize<JsonObject>(response.Content);
+            txtId.Text = auto["id"]?.ToString();
+            txtMarca.Text = auto["marca"]?.ToString();
+            txtModelo.Text = auto["modelo"]?.ToString();
+            txtAnio.Text = auto["anio"]?.ToString();
+            txtColor.Text = auto["color"]?.ToString();
+            txtPrecio.Text = auto["precio"]?.ToString();
+            txtConsumo.Text = auto["consumoLitrosPor100Km"]?.ToString();
+            txtTanque.Text = auto["capacidadTanqueLitros"]?.ToString();
+            txtCilindraje.Text = auto["cilindraje"]?.ToString();
+            cboCombustible.SelectedItem = auto["tipoCombustible"]?.ToString();
+            panelForm.Enabled = true;
+        }
+
+        private void BtnActualizar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var auto = new
+                {
+                    id = txtId.Text.Trim(),
+                    marca = txtMarca.Text.Trim(),
+                    modelo = txtModelo.Text.Trim(),
+                    anio = int.Parse(txtAnio.Text.Trim()),
+                    color = txtColor.Text.Trim(),
+                    precio = double.Parse(txtPrecio.Text.Trim()),
+                    consumoLitrosPor100Km = double.Parse(txtConsumo.Text.Trim()),
+                    capacidadTanqueLitros = double.Parse(txtTanque.Text.Trim()),
+                    cilindraje = int.Parse(txtCilindraje.Text.Trim()),
+                    tipoCombustible = cboCombustible.SelectedItem.ToString(),
+                    transmision = "Manual"
+                };
+
+                var client = new RestClient(BASE_URL);
+                var request = new RestRequest($"/gasolina/{txtIdBuscar.Text.Trim()}", Method.Put);
+                request.AddJsonBody(auto);
+                var response = client.Execute(request);
+
+                if (response.IsSuccessful)
+                {
+                    MessageBox.Show("Actualizado correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AutoObservable.GetInstancia().NotificarObservers();
+                    panelForm.Enabled = false;
+                }
+                else
+                {
+                    MessageBox.Show("Error al actualizar: " + response.StatusCode, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error en campos numéricos: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}
