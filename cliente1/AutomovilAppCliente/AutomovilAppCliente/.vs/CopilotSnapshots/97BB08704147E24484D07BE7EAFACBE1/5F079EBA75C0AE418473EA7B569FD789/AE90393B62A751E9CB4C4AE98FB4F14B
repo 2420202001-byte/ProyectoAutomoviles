@@ -1,0 +1,240 @@
+﻿using System;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Forms;
+using RestSharp;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+
+namespace AutoMovilAppCliente
+{
+    public partial class FormListarBateria : Form
+    {
+        private const string BASE_URL = "http://localhost:8080";
+        private readonly Color colorPrimario = Color.FromArgb(30, 58, 138);
+        private readonly Color colorAcento = Color.FromArgb(56, 189, 248);
+        private readonly Color colorFondo = Color.FromArgb(240, 249, 255);
+        private readonly Color colorPanel = Color.White;
+        private readonly Color colorTexto = Color.FromArgb(15, 23, 42);
+        private readonly Color colorSubTexto = Color.FromArgb(100, 116, 139);
+
+        private DataGridView dgv;
+        private Label lblTotal;
+        private TextBox txtFiltroMarca;
+        private TextBox txtFiltroCapacidad;
+        private TextBox txtFiltroVoltaje;
+        private JsonArray listaActual = new JsonArray();
+
+        public FormListarBateria()
+        {
+            CrearFormulario();
+            CargarDatos();
+            this.BackColor = colorFondo;
+            this.Font = new Font("Segoe UI", 9f);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+        }
+
+        private void CrearFormulario()
+        {
+            this.Text = "Listado de Baterías";
+            this.Size = new Size(920, 520);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            var panelHeader = new Panel { Dock = DockStyle.Top, Height = 65, BackColor = colorPrimario };
+            var lblTitulo = new Label { Text = "⚡  Listado de Baterías", Font = new Font("Segoe UI Semibold", 14f, FontStyle.Bold), ForeColor = colorAcento, AutoSize = true, Location = new Point(20, 18) };
+            panelHeader.Controls.Add(lblTitulo);
+
+            var panelNorth = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                Height = 110,
+                Padding = new Padding(10),
+                WrapContents = true,
+                AutoScroll = false
+            };
+
+            txtFiltroMarca = CrearTextBox("Filtrar por marca", 150);
+            txtFiltroCapacidad = CrearTextBox("Capacidad mínima", 150);
+            txtFiltroVoltaje = CrearTextBox("Voltaje mínimo", 150);
+
+            var btnFiltrarMarca = CrearBoton("Filtrar marca", colorAcento, colorPrimario);
+            btnFiltrarMarca.Click += (s, e) => FiltrarPorMarca();
+
+            var btnFiltrarCapacidad = CrearBoton("Filtrar capacidad", colorAcento, colorPrimario);
+            btnFiltrarCapacidad.Click += (s, e) => FiltrarPorCapacidad();
+
+            var btnFiltrarVoltaje = CrearBoton("Filtrar voltaje", colorAcento, colorPrimario);
+            btnFiltrarVoltaje.Click += (s, e) => FiltrarPorVoltaje();
+
+            var btnVerTodos = CrearBoton("Ver todos", Color.FromArgb(226, 232, 240), colorTexto);
+            btnVerTodos.Click += (s, e) => MostrarDatos(listaActual);
+
+            var btnRefrescar = CrearBoton("🔄 Refrescar", colorAcento, colorPrimario);
+            btnRefrescar.Click += (s, e) => CargarDatos();
+
+            panelNorth.Controls.Add(txtFiltroMarca);
+            panelNorth.Controls.Add(btnFiltrarMarca);
+            panelNorth.Controls.Add(txtFiltroCapacidad);
+            panelNorth.Controls.Add(btnFiltrarCapacidad);
+            panelNorth.Controls.Add(txtFiltroVoltaje);
+            panelNorth.Controls.Add(btnFiltrarVoltaje);
+            panelNorth.Controls.Add(btnVerTodos);
+            panelNorth.Controls.Add(btnRefrescar);
+
+            dgv = new DataGridView { Dock = DockStyle.Fill, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill, BackgroundColor = colorPanel, BorderStyle = BorderStyle.None, AllowUserToAddRows = false, AllowUserToDeleteRows = false, RowHeadersVisible = false };
+            dgv.EnableHeadersVisualStyles = false;
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = colorPrimario;
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+
+            lblTotal = new Label { Dock = DockStyle.Bottom, Height = 25, Text = "Total: 0 registros", Font = new Font("Segoe UI", 9f), ForeColor = colorSubTexto };
+
+            this.Controls.Add(dgv);
+            this.Controls.Add(lblTotal);
+            this.Controls.Add(panelNorth);
+            this.Controls.Add(panelHeader);
+        }
+
+        private TextBox CrearTextBox(string placeholder, int width)
+        {
+            return new TextBox
+            {
+                Width = width,
+                Font = new Font("Segoe UI", 9f),
+                BorderStyle = BorderStyle.FixedSingle,
+                BackColor = Color.White,
+                ForeColor = colorTexto,
+                PlaceholderText = placeholder
+            };
+        }
+
+        private Button CrearBoton(string texto, Color backColor, Color foreColor)
+        {
+            var btn = new Button
+            {
+                Text = texto,
+                BackColor = backColor,
+                ForeColor = foreColor,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand,
+                Font = new Font("Segoe UI", 9f, FontStyle.Bold),
+                AutoSize = true,
+                Padding = new Padding(10, 5, 10, 5)
+            };
+            btn.FlatAppearance.BorderSize = 0;
+            return btn;
+        }
+
+        private void CargarDatos()
+        {
+            var client = new RestClient(BASE_URL);
+            var request = new RestRequest("/baterias/", Method.Get);
+            var response = client.Execute(request);
+
+            if (!response.IsSuccessful)
+            {
+                return;
+            }
+
+            listaActual = JsonSerializer.Deserialize<JsonArray>(response.Content) ?? new JsonArray();
+            MostrarDatos(listaActual);
+        }
+
+        private void MostrarDatos(JsonArray lista)
+        {
+            dgv.Rows.Clear();
+            dgv.Columns.Clear();
+
+            dgv.Columns.Add("id", "ID Batería");
+            dgv.Columns.Add("marca", "Marca");
+            dgv.Columns.Add("capacidad", "Capacidad (kWh)");
+            dgv.Columns.Add("ciclos", "Ciclos de vida");
+            dgv.Columns.Add("voltaje", "Voltaje (V)");
+
+            foreach (var item in lista)
+            {
+                dgv.Rows.Add(
+                    item?["idBateria"]?.ToString(),
+                    item?["marca"]?.ToString(),
+                    item?["capacidadKwh"]?.ToString(),
+                    item?["ciclosVida"]?.ToString(),
+                    item?["voltaje"]?.ToString()
+                );
+            }
+
+            lblTotal.Text = "Total: " + lista.Count + " baterías";
+        }
+
+        private void FiltrarPorMarca()
+        {
+            string marca = txtFiltroMarca.Text.Trim();
+            if (string.IsNullOrEmpty(marca))
+            {
+                MostrarDatos(listaActual);
+                return;
+            }
+
+            var filtrada = new JsonArray();
+            foreach (var item in listaActual.Where(item => item != null && item["marca"]?.ToString().Contains(marca, StringComparison.OrdinalIgnoreCase) == true))
+            {
+                filtrada.Add(item);
+            }
+
+            MostrarDatos(filtrada);
+        }
+
+        private void FiltrarPorCapacidad()
+        {
+            string valor = txtFiltroCapacidad.Text.Trim();
+            if (!double.TryParse(valor, NumberStyles.Float, CultureInfo.InvariantCulture, out double minimo))
+            {
+                MostrarDatos(listaActual);
+                return;
+            }
+
+            var filtrada = new JsonArray();
+            foreach (var item in listaActual)
+            {
+                if (item == null || item["capacidadKwh"] == null)
+                {
+                    continue;
+                }
+
+                if (double.TryParse(item["capacidadKwh"]?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double capacidad) && capacidad >= minimo)
+                {
+                    filtrada.Add(item);
+                }
+            }
+
+            MostrarDatos(filtrada);
+        }
+
+        private void FiltrarPorVoltaje()
+        {
+            string valor = txtFiltroVoltaje.Text.Trim();
+            if (!double.TryParse(valor, NumberStyles.Float, CultureInfo.InvariantCulture, out double minimo))
+            {
+                MostrarDatos(listaActual);
+                return;
+            }
+
+            var filtrada = new JsonArray();
+            foreach (var item in listaActual)
+            {
+                if (item == null || item["voltaje"] == null)
+                {
+                    continue;
+                }
+
+                if (double.TryParse(item["voltaje"]?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double voltaje) && voltaje >= minimo)
+                {
+                    filtrada.Add(item);
+                }
+            }
+
+            MostrarDatos(filtrada);
+        }
+    }
+}
