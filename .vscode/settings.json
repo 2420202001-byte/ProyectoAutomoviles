@@ -1,5 +1,7 @@
 {
   "java.project.sourcePaths": [
     "servidor/AutomovilApp/src/main/java"
-  ]
+  ],
+  "java.compile.nullAnalysis.mode": "disabled",
+  "dotnet.preferCSharpExtension": true
 }

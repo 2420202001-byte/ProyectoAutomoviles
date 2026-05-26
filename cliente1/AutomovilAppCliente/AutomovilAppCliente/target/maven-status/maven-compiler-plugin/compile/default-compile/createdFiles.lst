@@ -1,0 +1,12 @@
+com\autogestion\AutomovilApp\model\AutomovilElectrico.class
+com\autogestion\AutomovilApp\controller\AutomovilElectricoController.class
+com\autogestion\AutomovilApp\service\BateriaService.class
+com\autogestion\AutomovilApp\controller\AutomovilGasolinaController.class
+com\autogestion\AutomovilApp\AutomovilAppApplication.class
+com\autogestion\AutomovilApp\model\AutomovilGasolina.class
+com\autogestion\AutomovilApp\controller\BateriaController.class
+com\autogestion\AutomovilApp\model\IAplicable.class
+com\autogestion\AutomovilApp\service\AutomovilGasolinaService.class
+com\autogestion\AutomovilApp\model\Automovil.class
+com\autogestion\AutomovilApp\service\AutomovilElectricoService.class
+com\autogestion\AutomovilApp\model\Bateria.class
