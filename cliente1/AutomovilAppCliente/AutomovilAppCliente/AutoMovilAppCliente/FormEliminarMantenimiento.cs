@@ -166,9 +166,28 @@ namespace AutoMovilAppCliente
             dgv.Columns.Add("km", "Kilometraje");
             dgv.Columns.Add("auto", "Automóvil");
 
-            string auto = "Sin auto";
-            if (m["automovilGasolina"] != null && m["automovilGasolina"].ToString() != "null")
-                auto = m["automovilGasolina"]["id"]?.ToString() + " - " + m["automovilGasolina"]["marca"]?.ToString();
+            string idAuto = "Sin auto";
+            string marcaAuto = "";
+
+            if (m["idAutomovilGasolina"] != null && m["idAutomovilGasolina"].ToString() != "null")
+            {
+                idAuto = m["idAutomovilGasolina"]?.ToString();
+            }
+            else if (m["automovilGasolina"] != null && m["automovilGasolina"].ToString() != "null")
+            {
+                idAuto = m["automovilGasolina"]["id"]?.ToString();
+            }
+
+            if (m["marcaAutomovilGasolina"] != null && m["marcaAutomovilGasolina"].ToString() != "null")
+            {
+                marcaAuto = m["marcaAutomovilGasolina"]?.ToString();
+            }
+            else if (m["automovilGasolina"] != null && m["automovilGasolina"].ToString() != "null")
+            {
+                marcaAuto = m["automovilGasolina"]["marca"]?.ToString();
+            }
+
+            string auto = string.IsNullOrEmpty(marcaAuto) ? idAuto : $"{idAuto} - {marcaAuto}";
 
             dgv.Rows.Add(
                 m["idMantenimiento"]?.ToString(),
