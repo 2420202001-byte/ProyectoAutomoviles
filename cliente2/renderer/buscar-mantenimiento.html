@@ -43,7 +43,7 @@
             try {
                 const res = await axios.get(`${BASE_URL}/mantenimientos/${id}`)
                 const m = res.data
-                const auto = m.automovilGasolina || {}
+                const auto = m.automovilGasolina || { id: m.idAutomovilGasolina || m.automovilId, marca: m.marcaAutomovilGasolina || m.marca }
                 document.getElementById('resultado').innerHTML = `
                     <table>
                         <tr><th>ID</th><th>Tipo</th><th>Descripción</th><th>Costo</th><th>Fecha</th><th>Kilometraje</th><th>Automóvil</th><th>Marca</th></tr>

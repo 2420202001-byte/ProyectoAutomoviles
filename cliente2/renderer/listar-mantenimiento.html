@@ -76,8 +76,9 @@
                 </tr>`
 
             lista.forEach(m => {
-                const idAuto = m.idAutomovilGasolina || 'N/A'
-                const marcaAuto = m.marcaAutomovilGasolina || 'N/A'
+                const autoObj = m.automovilGasolina || { id: m.idAutomovilGasolina || m.automovilId, marca: m.marcaAutomovilGasolina || m.marca }
+                const idAuto = autoObj.id || autoObj.idAutomovilGasolina || 'N/A'
+                const marcaAuto = autoObj.marca || autoObj.marcaAutomovilGasolina || 'N/A'
                 html += `<tr>
                     <td>${m.idMantenimiento}</td>
                     <td>${m.tipo}</td>
